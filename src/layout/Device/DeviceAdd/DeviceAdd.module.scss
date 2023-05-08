@@ -1,0 +1,65 @@
+/** @format */
+@import "../Device.module.scss";
+@import '../../../components/GlobalStyles/shared-styles.scss';
+
+.wrapper {
+  h3 {
+    color: #ff7506;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  input {
+    border: 1.5px solid #D4D4D7;
+  }   
+    .content {
+      height: $device-inner-height;
+      .form-container {
+        padding-right: 24px;
+
+        // gap: 24px;
+  
+        .device-info__top {
+          display: flex;
+          gap: 24px;
+
+          &>div {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 50%;
+
+
+            input,
+            .select-mui {
+              padding: 10px 12px 10px 12px;
+              width: 100%;
+            }
+
+            .select-mui {
+              padding-left: 0;
+            }
+          }
+        }
+
+        .device-info__bottom {
+          margin-top: 8px;
+
+          &>div {
+            input {
+              margin-top: 8px;
+              padding: 10px 12px 10px 12px;
+              width: 100%;
+              border-radius: 8px;
+            }
+          }
+        }
+
+      }
+    }
+
+
+
+
+}

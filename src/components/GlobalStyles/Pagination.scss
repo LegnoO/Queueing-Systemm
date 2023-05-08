@@ -1,0 +1,28 @@
+/** @format */
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+
+  & .page-active {
+    color: #ff993c;
+    border: 1px solid #ff993c;
+  }
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    a {
+      padding: 5px;
+
+      &:hover {
+        color: #ff993c;
+      }
+    }
+  }
+}

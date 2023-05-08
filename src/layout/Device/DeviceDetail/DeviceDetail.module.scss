@@ -1,0 +1,62 @@
+/** @format */
+@import "../Device.module.scss";
+
+.wrapper {
+   h3 {
+    color: #ff7506;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .inner {
+    height: $device-inner-height;
+    position: relative;
+
+    .content {
+      .body {
+        &>div {
+          display: flex;
+
+          flex-direction: column;
+          width: 49.99%;
+          gap: 16px;
+
+          &>div {
+            display: flex;
+
+            span {
+              width: 40%;
+              color: #282739;
+              font-weight: 600;
+              font-size: 16px;
+
+              &:nth-child(2) {
+                font-weight: 400;
+                color: #535261;
+                text-align: start;
+              }
+            }
+          }
+        }
+      }
+
+      .bottom {
+        margin-top: 16px;
+
+        h4 {
+          font-weight: 600;
+          font-size: 16px;
+          color: #282739;
+          margin-bottom: 8px;
+        }
+
+        p {
+          color: #535261;
+          font-weight: 400;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+ <div className={cx('service-info')}>
+              <div className={cx('left')}>
+                <label htmlFor="">Mã dịch vụ</label>
+                <input type="text" />
+                <label htmlFor="">Tên dịch vụ</label>
+                <input type="text" />
+              </div>
+              <div className={cx('right')}>
+                <label htmlFor="">Mô tả</label>
+                <textarea />
+              </div>
+            </div>
+            <div className={cx('assigment-rule')}>
+              <h3>Quy tắc cấp số</h3>
+              <div>
+                <div>
+                  <div>
+                    <Checkbox />
+                    <label htmlFor="">Tăng tự động từ:</label>
+                  </div>
+                  <div>
+                    <Checkbox />
+                    <label htmlFor="">Prefix:</label>
+                  </div>
+                  <div>
+                    <Checkbox />
+                    <label htmlFor="">Surfix:</label>
+                  </div>
+                  <div>
+                    <Checkbox />
+                    <label htmlFor="">Reset mỗi ngày</label>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <input type="text" name="" id="" />
+                    <span>Đến</span>
+                    <input type="text" name="" id="" />
+                  </div>
+                  <input type="text" name="" id="" />
+                  <input type="text" name="" id="" />
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+              .service-info {
+        display: flex;
+        gap: 24px;
+
+        .left,
+        .right {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          label {
+            color: #282739;
+            font-weight: 600;
+            font-size: 16px;
+          }
+        }
+
+        .left {
+          input {
+            width: 500px;
+            border: 1.5px solid #D4D4D7;
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 10px 12px 10px 12px;
+          }
+        }
+
+        .right {
+          textarea {
+            height: 100%;
+            width: 500px;
+            border: 1.5px solid #D4D4D7;
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 10px 270px 10px 12px;
+            font-weight: 400;
+            font-size: 16px;
+            color: #535261;
+          }
+        }
+      }
