@@ -1,44 +1,44 @@
 /** @format */
-import { DeviceListType } from "../types/Api";
-import { fetchDevice } from "../services/api"
+import { ServiceListType } from "../types/Api";
+import { fetchService } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchDeviceList = createAsyncThunk(
+export const fetchServiceList = createAsyncThunk(
   "firebase/fetchTicket",
-  fetchDevice
+  fetchService
 );
 
-interface DeviceState {
-  data: DeviceListType[];
+interface ServiceState {
+  data: ServiceListType[];
   status: "idle" | "pending" | "succeeded" | "failed";
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: DeviceState = {
+const initialState: ServiceState = {
   data: [],
   status: "idle",
   isLoading: false,
   error: null,
 };
 
-const deviceSlice = createSlice({
-  name: "device",
+const ServiceSlice = createSlice({
+  name: "Service",
   initialState,
   reducers: {
 
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDeviceList.pending, (state) => {
+      .addCase(fetchServiceList.pending, (state) => {
         Object.assign(state, {
           isLoading: true,
           status: "pending",
         });
       })
       .addCase(
-        fetchDeviceList.fulfilled,
-        (state, action: PayloadAction<DeviceListType[]>) => {
+        fetchServiceList.fulfilled,
+        (state, action: PayloadAction<ServiceListType[]>) => {
           Object.assign(state, {
             isLoading: false,
             status: "succeeded",
@@ -46,7 +46,7 @@ const deviceSlice = createSlice({
           });
         }
       )
-      .addCase(fetchDeviceList.rejected, (state, action: any) => {
+      .addCase(fetchServiceList.rejected, (state, action: any) => {
         Object.assign(state, {
           isLoading: false,
           status: "failed",
@@ -56,4 +56,4 @@ const deviceSlice = createSlice({
   },
 });
 
-export default deviceSlice.reducer;
+export default ServiceSlice.reducer;

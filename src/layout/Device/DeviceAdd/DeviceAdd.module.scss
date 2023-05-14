@@ -1,5 +1,4 @@
 /** @format */
-@import "../Device.module.scss";
 @import '../../../components/GlobalStyles/shared-styles.scss';
 
 .wrapper {
@@ -14,7 +13,7 @@
     border: 1.5px solid #D4D4D7;
   }   
     .content {
-      height: $device-inner-height;
+      height: 600px;
       .form-container {
         padding-right: 24px;
 

@@ -1,101 +1,71 @@
 /** @format */
-@import "../Device.module.scss";
 
+@import '../../../components/GlobalStyles/shared-styles.scss';
 
 .wrapper {
-  h3 {
-    color: #ff7506;
-    font-weight: 700;
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
+  .content {
+    height: 600px;
 
-  input {
-    border: 1.5px solid #D4D4D7;
-  }
+    .device-info {
+      padding-right: 24px;
 
-  .inner {
-    height: $device-inner-height;
+      // gap: 24px;
 
-    .content {
+      .device-info__top {
+        display: flex;
+        gap: 24px;
 
-
-
-      .device-info {
-        padding-right: 24px;
-
-        // gap: 24px;
-        input,
-        .select-mui {
-          color: #535261;
-          font-weight: 500;
-          font-size: 16px;
-          background: #FFFFFF;
-          margin-bottom: 8px;
-
-
-          &::placeholder {
-            color: #A9A9B0;
-            font-weight: 400;
-          }
-
-          &.select-mui {
-            color: #A9A9B0;
-            font-weight: 400;
-          }
-        }
-
-        label {
-          color: #282739;
-          font-weight: 600;
-          font-size: 16px;
-        }
-
-        .device-info__top {
+        & > div {
           display: flex;
-          gap: 24px;
+          flex-direction: column;
+          gap: 8px;
+          width: 50%;
 
-          &>div {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 50%;
+          input,
+          .select-mui {
+            border-radius: 8px;
+            padding: 10px 12px 10px 12px;
+            width: 100%;
+          }
 
-
-            input,
-            .select-mui {
-              border-radius: 8px;
-              padding: 10px 12px 10px 12px;
-              width: 100%;
-            }
-
-            .select-mui {
-              padding-left: 0;
-            }
+          .select-mui {
+            padding-left: 0;
           }
         }
+      }
 
-        .device-info__bottom {
-          margin-top: 8px;
+      .device-info__bottom {
+        margin-top: 8px;
 
-          &>div {
-            input {
-              margin-top: 8px;
-              padding: 10px 12px 10px 12px;
-              width: 100%;
-              border-radius: 8px;
-            }
+        & > div {
+          input {
+            margin-top: 8px;
+            padding: 10px 12px 10px 12px;
+            width: 100%;
+            border-radius: 8px;
           }
-          .service__usage-container{
-            display:flex;
-          }
-
         }
-
+        .service__usage-container {
+          display: flex;
+          gap: 15px;
+          flex-wrap: wrap;
+          background: #ffffff;
+          border: 1.5px solid #ffac6a;
+          border-radius: 8px;
+          padding: 10px 12px 10px 12px;
+          .service__usage-item {
+            gap: 10px;
+            white-space: nowrap;
+            background: #ffac6a;
+            box-shadow: 0px 0px 6px #e7e9f2;
+            border-radius: 9px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 4.5px 12px;
+          }
+        }
       }
     }
   }
-
-
-
 }

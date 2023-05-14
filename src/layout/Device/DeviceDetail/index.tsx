@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 const DeviceDetail = () => {
   const CONTENT_TITLES: pathType[] = [
     { text: 'Thiết bị' },
-    { text: 'Danh sách thiết bị', to: '/device' },
+    { text: 'Danh sách thiết bị', to: '/device-list' },
     { text: 'Chi tiết thiết bị' },
   ];
   const location = useLocation();
@@ -21,11 +21,11 @@ const DeviceDetail = () => {
     <>
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
-        <h3>Quản lý thiết bị</h3>
-        <div className={cx('inner')}>
-          <div className={cx('content')}>
-            <h4>Thông tin thiết bị</h4>
-            <div className={cx('body')}>
+        <h3 className={cx('header-title')}>Quản lý thiết bị</h3>
+        <div className={cx('content')}>
+          <div className={cx('form-container')}>
+            <h4 className={cx('title')}>Thông tin thiết bị</h4>
+            <div className={cx('device-info-top')}>
               <div>
                 <div>
                   <span>Mã thiết bị</span>
@@ -55,20 +55,22 @@ const DeviceDetail = () => {
                 </div>
               </div>
             </div>
-            <div className={cx('bottom')}>
+            <div className={cx('device-info-bottom')}>
               <h4>Dịch vụ sử dụng:</h4>
               <p>{deviceData.data.service_usage}</p>
             </div>
           </div>
-
-          <Link to="/device-add">
-            <button className={cx('add-service-button')}>
-              <span>
-                <AddBoxIcon />
-              </span>
-              <span>Thêm thiết bị</span>
-            </button>
-          </Link>
+          
+          <div className={cx('service-container')}>
+            <Link to="/service-add">
+              <button className={cx('')}>
+                <span>
+                  <AddBoxIcon />
+                </span>
+                <span>Thêm dịch vụ</span>
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </>

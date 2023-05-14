@@ -1,5 +1,8 @@
 /** @format */
 import { Provider } from "react-redux";
+import { StyledEngineProvider } from "@mui/material/styles";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
@@ -12,11 +15,15 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
+   <StyledEngineProvider injectFirst>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
   <Provider store={store}>
   <GlobalStyles>
     <Routing />
   </GlobalStyles>
   </Provider>
+   </LocalizationProvider>
+  </StyledEngineProvider>
    //</React.StrictMode> 
 );
 

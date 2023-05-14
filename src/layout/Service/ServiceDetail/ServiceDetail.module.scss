@@ -1,0 +1,68 @@
+@import '../../../components/GlobalStyles/shared-styles.scss';
+
+.wrapper {
+  .content {
+    position: relative;
+    height: 600px;
+    & > div {
+      display: flex;
+      height: 100%;
+      gap: 24px;
+    }
+    .data-detail,
+    .data-filter {
+      background-color: #fff;
+      box-shadow: 2px 2px 8px rgba(232, 239, 244, 0.8);
+      border-radius: 12px;
+      padding: 16px 16px 0 16px;
+    }
+
+    .data-detail {
+      width: 32%;
+      .info,
+      .rule {
+        p {
+          color: #282739;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+        span {
+          color: #535261;
+          font-weight: 400;
+          font-size: 0.9rem;
+        }
+      }
+      .rule {
+        .box-number {
+          background: #ffffff;
+          padding: 10px;
+          border: 1.5px solid #d4d4d7;
+          border-radius: 8px;
+        }
+      }
+    }
+    .data-filter {
+      background-color: #fff;
+      width: 64%;
+      .form-control{
+        .test2{
+
+        }
+      }
+      .list-table {
+        .status {
+          display:flex;
+          align-items: center;
+          gap: 4px;
+          .circle-icon {
+            display: flex;
+
+            & > svg {
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

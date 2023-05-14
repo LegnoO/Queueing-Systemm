@@ -29,7 +29,7 @@ const DeviceAdd = () => {
 
   const CONTENT_TITLES: pathType[] = [
     { text: 'Thiết bị' },
-    { text: 'Danh sách thiết bị', to: '/device' },
+    { text: 'Danh sách thiết bị', to: '/device-list' },
     { text: 'Thêm thiết bị' },
   ];
 
@@ -165,7 +165,7 @@ const DeviceAdd = () => {
           </div>
         </div>
         <div className={cx('action-button')}>
-          <Button to="/device" className={cx('action-button__cancel')}>
+          <Button to="/device-list" className={cx('action-button__cancel')}>
             Hủy bỏ
           </Button>
           <Button

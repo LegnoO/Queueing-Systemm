@@ -1,0 +1,77 @@
+@import '../../../components/GlobalStyles/shared-styles.scss';
+
+.wrapper {
+  .content {
+    position: relative;
+    height: 600px;
+
+    .form-container {
+      padding-right: 24px;
+      .form-field {
+        input,
+        textarea {
+          padding: 10px 12px;
+        }
+      }
+      .form-rule {
+        h6 {
+          color: #282739;
+          font-weight: 600;
+          font-size: 16px;
+        }
+        .box-number {
+          color: #535261;
+          font-weight: 400;
+          font-size: 16px;
+          background: #ffffff;
+          padding: 10px 12px;
+          border: 1.5px solid #d4d4d7;
+          border-radius: 8px;
+        }
+        .form-rule-item {
+          width: 370px;
+          margin-left: -9px;
+        }
+      }
+    }
+
+    .data-detail {
+      width: 32%;
+      .info,
+      .rule {
+        p {
+          color: #282739;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+        span {
+          color: #535261;
+          font-weight: 400;
+          font-size: 0.9rem;
+        }
+      }
+    }
+    .data-filter {
+      background-color: #fff;
+      width: 64%;
+      .form-control {
+        .test2 {
+        }
+      }
+      .list-table {
+        .status {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          .circle-icon {
+            display: flex;
+
+            & > svg {
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

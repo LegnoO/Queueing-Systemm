@@ -25,8 +25,8 @@ const Sidebar = () => {
     {
       title: 'Dashboard',
     },
-    { title: 'Thiết bị', to: '/device' },
-    { title: 'Dịch vụ' },
+    { title: 'Thiết bị', to: '/device-list' },
+    { title: 'Dịch vụ', to: '/service-list' },
     { title: 'Cấp số' },
     { title: 'Báo cáo' },
     { title: 'Cài đặt hệ thống' },

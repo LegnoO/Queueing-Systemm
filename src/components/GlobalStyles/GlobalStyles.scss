@@ -1,7 +1,7 @@
 /** @format */
 
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap");
-
+@import "./grid";
 
 :root {
   --text-error: #e73f3f;
@@ -46,13 +46,6 @@ a[href] {
 ol,
 ul {
   list-style: none;
-}
-
-img,
-svg {
-  /* width: 100%;
-   display: block;
-    margin: 0;  */
 }
 
 
@@ -106,22 +99,3 @@ tr {
   cursor: pointer;
 }
 
-/* ------------------ Flex ------------------ */
-
-.d-flex {
-  display: flex;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.justify-content-space-between {
-  justify-content: space-between;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-/* ------------------ Margin ------------------ */

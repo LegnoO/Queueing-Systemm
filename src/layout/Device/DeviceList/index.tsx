@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './DeviceList.module.scss';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -8,10 +8,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import classNames from 'classnames/bind';
 import { fetchDevice } from '~/services/api';
 import { DeviceListType } from '~/types/Api';
-import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '~/app/store';
-import { fetchDeviceStart } from '~/features/deviceSlice';
+import { fetchDeviceList } from '~/features/deviceSlice';
 import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
 import { truncateString } from '~/util/truncateString';
@@ -47,11 +46,11 @@ const DeviceList = () => {
   const MENU_ACTIVE = ['Tất cả', 'Hoạt động', 'Ngưng hoạt động'];
   const MENU_CONNECT = ['Tất cả', 'Kết nối', 'Mất kết nối'];
   const deviceData = useAppSelector((state) => state.device.data);
-  console.log(deviceData);
+
   // const result = await fetchDevice()
   // dispatch(fetchDeviceSuccess(result));
   const handleFetchData = (): void => {
-    dispatch(fetchDevice());
+    dispatch(fetchDeviceList());
   };
 
   const handleFilterData = (event: SelectChangeEvent) => {
@@ -109,7 +108,7 @@ const DeviceList = () => {
   return (
     <>
       <Header path={CONTENT_TITLES} />
-      <div onClick={() => {}} className={cx('wrapper')}>
+      <div className={cx('wrapper')}>
         <h3 className={cx('header-title')}>Danh sách thiết bị</h3>
         <div className={cx('content')}>
           <div className={cx('form-control')}>
@@ -312,14 +311,16 @@ const DeviceList = () => {
                 })}
               </tbody>
             </table>
-            <Link to="/device-add">
-              <button className={cx('add-service-button')}>
-                <span>
-                  <AddBoxIcon />
-                </span>
-                <span>Thêm thiết bị</span>
-              </button>
-            </Link>
+            <div className={cx('service-container')}>
+              <Link to="/device-add">
+                <button className={cx('')}>
+                  <span>
+                    <AddBoxIcon />
+                  </span>
+                  <span>Thêm dịch vụ</span>
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

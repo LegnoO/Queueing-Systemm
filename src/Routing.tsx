@@ -8,7 +8,26 @@ import ForgotPassword from './layout/Login/ForgotPassword';
 import LoginForm from './layout/Login/LoginForm';
 import LoginLayout from './layout/LoginLayout';
 import DefaultLayout from './layout/DefaultLayout';
-import { DeviceDetail, DeviceList, DeviceAdd,DeviceUpdate } from './layout/Device';
+import {
+  DeviceDetail,
+  DeviceList,
+  DeviceAdd,
+  DeviceUpdate,
+} from './layout/Device';
+
+import {
+  ServiceList,
+  ServiceDetail,
+  ServiceAdd,
+  ServiceUpdate,
+} from './layout/Service';
+
+import {
+  SequenceList
+} from './layout/Sequence';
+
+
+
 const Routing = () => {
   const pages = [
     {
@@ -19,7 +38,7 @@ const Routing = () => {
 
     {
       component: <DeviceList />,
-      path: '/device',
+      path: '/device-list',
     },
     {
       component: <DeviceDetail />,
@@ -28,10 +47,32 @@ const Routing = () => {
     {
       component: <DeviceAdd />,
       path: '/device-add',
-    },    {
+    },
+    {
       component: <DeviceUpdate />,
       path: '/device-update',
     },
+    {
+      component: <ServiceList />,
+      path: '/service-list',
+    },
+    {
+      component: <ServiceDetail />,
+      path: '/service-detail',
+    },
+    {
+      component: <ServiceAdd />,
+      path: '/service-add',
+    },
+    {
+      component: <ServiceUpdate />,
+      path: '/service-update',
+    }, 
+    {
+      component: <SequenceList />,
+      path: '/sequence-list',
+    },
+    
     {
       component: <LoginForm />,
       path: '/login',
