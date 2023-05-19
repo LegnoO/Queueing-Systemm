@@ -22,11 +22,9 @@ import {
   ServiceUpdate,
 } from './layout/Service';
 
-import {
-  SequenceList
-} from './layout/Sequence';
+import { SequenceList, SequenceDetail } from './layout/Sequence';
 
-
+import { ReportList } from './layout/Report';
 
 const Routing = () => {
   const pages = [
@@ -67,12 +65,19 @@ const Routing = () => {
     {
       component: <ServiceUpdate />,
       path: '/service-update',
-    }, 
+    },
     {
       component: <SequenceList />,
       path: '/sequence-list',
     },
-    
+    {
+      component: <SequenceDetail />,
+      path: '/sequence-detail',
+    },
+    {
+      component: <ReportList />,
+      path: '/report-list',
+    },
     {
       component: <LoginForm />,
       path: '/login',

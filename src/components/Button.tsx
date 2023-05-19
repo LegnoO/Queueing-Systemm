@@ -38,6 +38,7 @@ const Button: React.FC<ButtonProps> = ({
         {
           '&': {
             textTransform: 'unset',
+            whiteSpace: 'nowrap',
           },
           '& .MuiButton-startIcon, & .MuiButton-endIcon': {
             marginRight: '0px',

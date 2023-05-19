@@ -1,7 +1,7 @@
 /** @format */
 
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap");
-@import "./grid";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');
+@import './grid';
 
 :root {
   --text-error: #e73f3f;
@@ -23,8 +23,7 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Nunito";
-
+  font-family: 'Nunito';
 }
 
 body {
@@ -47,8 +46,6 @@ ol,
 ul {
   list-style: none;
 }
-
-
 
 button,
 input,
@@ -80,7 +77,6 @@ tr {
   border: none;
 }
 
-
 /* ------------------ Text ------------------ */
 .text-start {
   text-align: start;
@@ -99,3 +95,14 @@ tr {
   cursor: pointer;
 }
 
+// ::-webkit-scrollbar {
+//   width: 1px;
+// }
+
+// .MuiPaper-root::-webkit-scrollbar-thumb {
+//   background-color: red;
+// }
+#menu-SERVICE .MuiPaper-root {
+  height: 200px;
+  overflow-y: scroll;
+}

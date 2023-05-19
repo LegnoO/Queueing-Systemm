@@ -10,6 +10,19 @@
   height: 100%;
 }
 
+/* ------------------ Text ------------------ */
+.fw-bold {
+  font-weight: 700;
+}
+
+.fw-normal {
+  font-weight: 400;
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
 /* ------------------ flex ------------------ */
 
 .d-flex {
@@ -203,4 +216,16 @@
 
 .mb-8 {
   margin-bottom: calc(var(--spacing) * 3);
+}
+
+/* --------------------- padding --------------------- */
+
+.p-0 {
+  padding: 0 !important;
+}
+
+/* --------------------- display --------------------- */
+
+.d-none {
+  display: none;
 }

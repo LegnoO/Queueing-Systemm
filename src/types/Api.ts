@@ -58,16 +58,18 @@ export interface SequenceListType {
     stt: string,
     customer_name: string,
     service_name: string,
-    timestamp_end: {
-      seconds:number,
-    nanoseconds:number
-  },
-    timestamp_start: {
-      seconds:number,
-    nanoseconds:number
-  }
     status: string,
-    source: string
+    source: string,
+    email: string,
+    phone: string,
+    timestamp_end: {
+      seconds: number,
+      nanoseconds: number
+    },
+    timestamp_start: {
+      seconds: number,
+      nanoseconds: number
+    }
   },
   id: string
 }
@@ -76,8 +78,16 @@ export interface Sequence {
   stt: string,
   customer_name: string,
   service_name: string,
-  timestamp_end: Date,
-  timestamp_start: Date
+  timestamp_end: {
+    seconds: number,
+    nanoseconds: number
+  },
+  timestamp_start: {
+    seconds: number,
+    nanoseconds: number
+  },
   status: string,
   source: string,
+  email: string,
+  phone: string,
 }

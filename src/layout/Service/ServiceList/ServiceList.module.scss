@@ -1,4 +1,4 @@
-@import '../../../components/GlobalStyles/shared-styles.scss';
+@import '../../../components/GlobalStyles/base.scss';
 
 .wrapper {
   .content {
@@ -19,12 +19,7 @@
               color: #4277ff;
               text-decoration: underline;
             }
-            .circle-icon {
-              margin-right: 5px;
-              & > svg {
-                font-size: 10px;
-              }
-            }
+          
           }
         }
       }

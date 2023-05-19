@@ -21,7 +21,7 @@ interface ServiceFilter {
   SEARCH_TERM: string;
 }
 
-const ServiceList = () => {
+const ServiceDetail = () => {
   const dispatch = useAppDispatch();
   const serviceData = useAppSelector((state) => state.service.data);
   const CONTENT_TITLES: pathType[] = [
@@ -305,4 +305,4 @@ const ServiceList = () => {
   );
 };
 
-export default ServiceList;
+export default ServiceDetail;
