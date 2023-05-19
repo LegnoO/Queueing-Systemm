@@ -1,0 +1,18 @@
+@import '../../../components/GlobalStyles/base.scss';
+
+.wrapper {
+  .content {
+    height: 600px;
+    table{
+      tbody{
+        tr{
+          td{
+            padding: 14px !important;
+          }
+  
+        }
+      }
+    }
+  }
+
+}

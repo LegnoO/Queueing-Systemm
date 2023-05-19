@@ -1,0 +1,22 @@
+@import '../../../components/GlobalStyles/base.scss';
+
+.wrapper {
+  .content {
+    height: 600px;
+    .form-container {
+      .sequence-info {
+        position: relative;
+        .sequence-info-item {
+    
+            span.circle-icon{
+              margin-right:5px;
+              & > svg{
+                font-size:14px;
+              }
+            }
+         
+        }
+      }
+    }
+  }
+}
