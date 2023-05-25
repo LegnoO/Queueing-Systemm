@@ -4,7 +4,7 @@ import { fetchDevice } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 export const fetchDeviceList = createAsyncThunk(
-  "firebase/fetchTicket",
+  "firebase/fetchDevice",
   fetchDevice
 );
 

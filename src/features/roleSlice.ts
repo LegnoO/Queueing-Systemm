@@ -1,44 +1,44 @@
 /** @format */
-import { ServiceListType } from "../types/Api";
-import { fetchService } from "../services/api"
+import { RoleListType } from "../types/Api";
+import { fetchRole } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchServiceList = createAsyncThunk(
-  "firebase/fetchService",
-  fetchService
+export const fetchRoleList = createAsyncThunk(
+  "firebase/fetchRole",
+  fetchRole
 );
 
-interface ServiceState {
-  data: ServiceListType[];
+interface RoleState {
+  data: RoleListType[];
   status: "idle" | "pending" | "succeeded" | "failed";
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: ServiceState = {
+const initialState: RoleState = {
   data: [],
   status: "idle",
   isLoading: false,
   error: null,
 };
 
-const ServiceSlice = createSlice({
-  name: "Service",
+const RoleSlice = createSlice({
+  name: "Role",
   initialState,
   reducers: {
 
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchServiceList.pending, (state) => {
+      .addCase(fetchRoleList.pending, (state) => {
         Object.assign(state, {
           isLoading: true,
           status: "pending",
         });
       })
       .addCase(
-        fetchServiceList.fulfilled,
-        (state, action: PayloadAction<ServiceListType[]>) => {
+        fetchRoleList.fulfilled,
+        (state, action: PayloadAction<RoleListType[]>) => {
           Object.assign(state, {
             isLoading: false,
             status: "succeeded",
@@ -46,7 +46,7 @@ const ServiceSlice = createSlice({
           });
         }
       )
-      .addCase(fetchServiceList.rejected, (state, action: any) => {
+      .addCase(fetchRoleList.rejected, (state, action: any) => {
         Object.assign(state, {
           isLoading: false,
           status: "failed",
@@ -56,4 +56,4 @@ const ServiceSlice = createSlice({
   },
 });
 
-export default ServiceSlice.reducer;
+export default RoleSlice.reducer;

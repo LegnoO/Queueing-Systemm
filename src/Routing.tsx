@@ -3,7 +3,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Fragment } from 'react';
-import App from './App';
+import DashBoard from './layout/DashBoard';
 import ForgotPassword from './layout/Login/ForgotPassword';
 import LoginForm from './layout/Login/LoginForm';
 import LoginLayout from './layout/LoginLayout';
@@ -22,14 +22,18 @@ import {
   ServiceUpdate,
 } from './layout/Service';
 
-import { SequenceList, SequenceDetail } from './layout/Sequence';
+import { SequenceList, SequenceDetail, SequenceAdd } from './layout/Sequence';
 
 import { ReportList } from './layout/Report';
+
+import { RoleList, RoleUpdate, RoleAdd } from './layout/Role';
+import { AccountList, AccountAdd, AccountUpdate } from './layout/Account';
+import ActivityLog from '~/layout/ActivityLog';
 
 const Routing = () => {
   const pages = [
     {
-      component: <App />,
+      component: <DashBoard />,
       path: '/',
       layout: null,
     },
@@ -75,9 +79,42 @@ const Routing = () => {
       path: '/sequence-detail',
     },
     {
+      component: <SequenceAdd />,
+      path: '/sequence-add',
+    },
+    {
       component: <ReportList />,
       path: '/report-list',
     },
+    {
+      component: <RoleList />,
+      path: '/role-list',
+    },
+    {
+      component: <RoleUpdate />,
+      path: '/role-update',
+    },
+    {
+      component: <RoleAdd />,
+      path: '/role-add',
+    },
+    {
+      component: <AccountList />,
+      path: '/account-list',
+    },
+    {
+      component: <AccountAdd />,
+      path: '/account-add',
+    },
+    {
+      component: <AccountUpdate />,
+      path: '/account-update',
+    },
+    {
+      component: <ActivityLog />,
+      path: '/activity',
+    },
+
     {
       component: <LoginForm />,
       path: '/login',
@@ -118,3 +155,12 @@ const Routing = () => {
 };
 
 export default Routing;
+
+// {routes.map((route, index) => {
+//   const { path, element, layout } = route;
+//   const Layout = layout || DefaultLayout;
+
+//   return (
+//     <Route key={index} path={path} element={<Layout>{element}</Layout>} />
+//   );
+// })}

@@ -44,21 +44,24 @@
     .data-filter {
       background-color: #fff;
       width: 64%;
-      .form-control{
-        .test2{
-
+      .form-control {
+        .test2 {
         }
       }
-      .list-table {
-        .status {
-          display:flex;
-          align-items: center;
-          gap: 4px;
-          .circle-icon {
-            display: flex;
 
-            & > svg {
-              font-size: 10px;
+      .list-container {
+        position: unset;
+        .list-table {
+          .status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            .circle-icon {
+              display: flex;
+
+              & > svg {
+                font-size: 10px;
+              }
             }
           }
         }

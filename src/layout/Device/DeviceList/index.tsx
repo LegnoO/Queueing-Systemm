@@ -1,5 +1,5 @@
 /** @format */
-
+import Search from '~/components/Search';
 import { useEffect, useState } from 'react';
 import styles from './DeviceList.module.scss';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
@@ -20,17 +20,19 @@ const cx = classNames.bind(styles);
 interface DeviceFilter {
   MENU_ACTIVE: string[];
   MENU_CONNECT: string[];
-  SEARCH_TERM: '';
+  SEARCH_TERM: string;
 }
 const DeviceList = () => {
   // const handleChange = (event: SelectChangeEvent) => {
   //   setAge(event.target.value as string);
   // };
+
   const [dataFilter, setDataFilter] = useState<DeviceFilter>({
     MENU_ACTIVE: ['Hoạt động', 'Ngưng hoạt động'],
     MENU_CONNECT: ['Kết nối', 'Mất kết nối'],
     SEARCH_TERM: '',
   });
+  
   const [data, setData] = useState<DeviceListType[]>([]);
   const [expand, setExpand] = useState<boolean>(false);
   const [checkID, setCheckID] = useState<string>('');
@@ -75,6 +77,11 @@ const DeviceList = () => {
     }
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
+  };
+
+
   useEffect(() => {
     setData(
       deviceData.filter((device: DeviceListType) => {
@@ -101,7 +108,7 @@ const DeviceList = () => {
 
     navigate('/device-update', { state: { device: deviceDetail } });
   };
-
+ 
   useEffect(() => {
     handleFetchData();
   }, []);
@@ -210,7 +217,12 @@ const DeviceList = () => {
             </div>
             <div className={cx('form-field')}>
               <label>Từ khóa</label>
-              <input />
+              <Search
+                className={cx('test2')}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  handleSearch(event);
+                }}
+              />
             </div>
           </div>
 
@@ -311,7 +323,7 @@ const DeviceList = () => {
                 })}
               </tbody>
             </table>
-            <div className={cx('service-container')}>
+            <div className={cx('service-btn-container')}>
               <Link to="/device-add">
                 <button className={cx('')}>
                   <span>

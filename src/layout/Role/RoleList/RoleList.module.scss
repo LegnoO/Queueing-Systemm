@@ -1,0 +1,15 @@
+@import '../../../components/GlobalStyles/base.scss';
+
+.wrapper {
+  .content {
+    height: 600px;
+    .form-control {
+      .form-field {
+        .search-bar {
+          width: 140px;
+          height: 44px;
+        }
+      }
+    }
+  }
+}

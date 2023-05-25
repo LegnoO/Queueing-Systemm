@@ -7,12 +7,17 @@ import { combineReducers } from "redux";
 import deviceSlice from "../features/deviceSlice";
 import serviceSlice from "../features/serviceSlice";
 import sequenceSlice from "../features/sequenceSlice"
+import roleSlice from "../features/roleSlice"
+import accountSlice from "../features/accountSlice"
+
 import thunkMiddleware from "redux-thunk";
 
 const rootReducer = combineReducers({
   device: deviceSlice,
   service: serviceSlice,
   sequence: sequenceSlice,
+  role: roleSlice,
+  account: accountSlice,
 });
 
 const loggerMiddleware = createLogger();

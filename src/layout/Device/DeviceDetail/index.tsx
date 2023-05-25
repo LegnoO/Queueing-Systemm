@@ -5,10 +5,11 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import classNames from 'classnames/bind';
 import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const DeviceDetail = () => {
+  const navigate = useNavigate();
   const CONTENT_TITLES: pathType[] = [
     { text: 'Thiết bị' },
     { text: 'Danh sách thiết bị', to: '/device-list' },
@@ -16,6 +17,11 @@ const DeviceDetail = () => {
   ];
   const location = useLocation();
   const deviceData = location.state.device[0];
+  console.log(deviceData.data);
+
+  const handleMoveToUpdate = (): void => {
+    navigate('/device-update', { state: { device: [deviceData] } });
+  };
 
   return (
     <>
@@ -60,16 +66,14 @@ const DeviceDetail = () => {
               <p>{deviceData.data.service_usage}</p>
             </div>
           </div>
-          
-          <div className={cx('service-container')}>
-            <Link to="/service-add">
-              <button className={cx('')}>
-                <span>
-                  <AddBoxIcon />
-                </span>
-                <span>Thêm dịch vụ</span>
-              </button>
-            </Link>
+
+          <div className={cx('service-btn-container')}>
+            <button onClick={handleMoveToUpdate}>
+              <span>
+                <AddBoxIcon />
+              </span>
+              <span>Cập nhật thiết bị</span>
+            </button>
           </div>
         </div>
       </div>

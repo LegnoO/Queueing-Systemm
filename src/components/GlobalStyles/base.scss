@@ -1,9 +1,27 @@
 .wrapper {
+  .warning-require {
+    margin: 0 5px;
+    color: #ff4747;
+  }
   label {
     color: #282739;
     font-size: 0.95rem;
     font-weight: 600;
-    margin-top: 8px;
+  }
+  input:not(.MuiInputBase-input),
+  textarea {
+    padding: 10px 12px 10px 12px;
+    color: #535261;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+    border: 1.5px solid #d4d4d7;
+    outline: none;
+    resize: none;
+    &.input-area {
+      height: 160px;
+      padding: 10px 0px 10px 12px;
+    }
   }
 
   .header-title {
@@ -37,15 +55,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      input:not(.MuiInputBase-input),
-      textarea {
-        color: #535261;
-        font-size: 16px;
-        font-weight: 400;
-        border-radius: 8px;
-        border: 1.5px solid #d4d4d7;
-        outline: none;
-      }
+
       input::placeholder {
         color: #a9a9b0;
         font-weight: 400;

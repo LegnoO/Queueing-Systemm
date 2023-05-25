@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 const ServiceAdd = () => {
   const dispatch = useAppDispatch();
-  
+
   const [dataForm, setDataForm] = useState<Service>({
     service_id: '',
     describe: '',
@@ -53,19 +53,23 @@ const ServiceAdd = () => {
               className={cx(
                 'form-input',
                 'row',
-                'gap-6',
+                'gap-4',
                 'flex-nowrap',
-                'mb-7',
+                'mb-4',
               )}
             >
               <div className={cx('form-field', 'col-2')}>
-                <label>Mã dịch vụ</label>
+                <label>
+                  Mã dịch vụ<span className={cx('warning-require')}>*</span>
+                </label>
                 <Input
                   onChange={handleChangeData}
                   name="service_id"
                   className="w-100"
                 />
-                <label>Tên dịch vụ</label>
+                <label>
+                  Tên dịch vụ<span className={cx('warning-require')}>*</span>
+                </label>
                 <Input
                   onChange={handleChangeData}
                   name="service_name"
@@ -83,7 +87,7 @@ const ServiceAdd = () => {
             </div>
 
             <h4 className={cx('title')}>Quy tắc cấp số</h4>
-            <div className={cx('form-rule', 'd-flex', 'flex-column', 'gap-5')}>
+            <div className={cx('form-rule', 'd-flex', 'flex-column', 'gap-3')}>
               <div
                 className={cx(
                   'form-rule-item',
@@ -103,15 +107,20 @@ const ServiceAdd = () => {
                   />
                   <h6>Tăng tự động từ:</h6>
                 </div>
-                <div className="col d-flex align-items-center gap-3">
+                <div className="col d-flex align-items-center">
                   <div className={cx('box-number')}>0001</div>
-                  <h6>Đến</h6>
+                  <h6 className="mx-2">Đến</h6>
                   <div className={cx('box-number')}>9999</div>
                 </div>
               </div>
 
               <div
-                className={cx('form-rule-item', 'd-flex', 'align-items-center')}
+                className={cx(
+                  'form-rule-item',
+                  'd-flex',
+                  'align-items-center',
+                  'justify-content-space-between',
+                )}
               >
                 <div className="col-2 d-flex align-items-center">
                   <Checkbox
@@ -129,7 +138,12 @@ const ServiceAdd = () => {
                 </div>
               </div>
               <div
-                className={cx('form-rule-item', 'd-flex', 'align-items-center')}
+                className={cx(
+                  'form-rule-item',
+                  'd-flex',
+                  'align-items-center',
+                  'justify-content-space-between',
+                )}
               >
                 <div className="col-2 d-flex align-items-center">
                   <Checkbox
@@ -147,7 +161,12 @@ const ServiceAdd = () => {
                 </div>
               </div>
               <div
-                className={cx('form-rule-item', 'd-flex', 'align-items-center')}
+                className={cx(
+                  'form-rule-item',
+                  'd-flex',
+                  'align-items-center',
+                  'justify-content-space-between',
+                )}
               >
                 <div className="d-flex align-items-center">
                   <Checkbox
@@ -161,6 +180,10 @@ const ServiceAdd = () => {
                   <h6>Reset mỗi ngày</h6>
                 </div>
               </div>
+            </div>
+            <div className="text-muted mt-3">
+              <span className={cx('warning-require')}>*</span>Là những thông tin
+              bắt buộc
             </div>
           </div>
         </div>

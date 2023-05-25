@@ -4,7 +4,7 @@ import { fetchSequence } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 export const fetchSequenceList = createAsyncThunk(
-  "firebase/fetchTicket",
+  "firebase/fetchSequence",
   fetchSequence
 );
 

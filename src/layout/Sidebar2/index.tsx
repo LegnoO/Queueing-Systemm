@@ -3,7 +3,6 @@
 import { images } from '~/assets/images';
 import styles from './Sidebar.module.scss';
 import Button from '~/components/Button';
-import { Link } from 'react-router-dom';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
@@ -28,12 +27,11 @@ const Sidebar = () => {
   const BUTTON_MENU: ButtonMenuProps[] = [
     {
       title: 'Dashboard',
-      to: '/',
     },
     { title: 'Thiết bị', to: '/device-list' },
     { title: 'Dịch vụ', to: '/service-list' },
-    { title: 'Cấp số', to: '/sequence-list' },
-    { title: 'Báo cáo', to: '/report-list' },
+    { title: 'Cấp số' },
+    { title: 'Báo cáo' },
     {
       title: 'Cài đặt hệ thống',
       endIcon: (
@@ -41,13 +39,8 @@ const Sidebar = () => {
           <MoreVertIcon />
           <div className={cx('dropdown-menu')}>
             <ul className="d-flex flex-column">
-              <li>
-                <Link to="/role-list">Quản lý vai trò</Link>
-              </li>
-              <li>   
-                <Link to="/account-list">Quản lý tài khoản</Link>
-                </li>
-           
+              <li>Quản lý vai trò</li>
+              <li>Quản lý tài khoản</li>
               <li>Nhật ký người dùng</li>
             </ul>
           </div>

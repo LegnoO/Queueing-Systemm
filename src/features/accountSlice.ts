@@ -1,44 +1,44 @@
 /** @format */
-import { ServiceListType } from "../types/Api";
-import { fetchService } from "../services/api"
+import { AccountListType } from "../types/Api";
+import { fetchAccount } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchServiceList = createAsyncThunk(
-  "firebase/fetchService",
-  fetchService
+export const fetchAccountList = createAsyncThunk(
+  "firebase/fetchAccount",
+  fetchAccount
 );
 
-interface ServiceState {
-  data: ServiceListType[];
+interface AccountState {
+  data: AccountListType[];
   status: "idle" | "pending" | "succeeded" | "failed";
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: ServiceState = {
+const initialState: AccountState = {
   data: [],
   status: "idle",
   isLoading: false,
   error: null,
 };
 
-const ServiceSlice = createSlice({
-  name: "Service",
+const accountSlice = createSlice({
+  name: "account",
   initialState,
   reducers: {
 
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchServiceList.pending, (state) => {
+      .addCase(fetchAccountList.pending, (state) => {
         Object.assign(state, {
           isLoading: true,
           status: "pending",
         });
       })
       .addCase(
-        fetchServiceList.fulfilled,
-        (state, action: PayloadAction<ServiceListType[]>) => {
+        fetchAccountList.fulfilled,
+        (state, action: PayloadAction<AccountListType[]>) => {
           Object.assign(state, {
             isLoading: false,
             status: "succeeded",
@@ -46,7 +46,7 @@ const ServiceSlice = createSlice({
           });
         }
       )
-      .addCase(fetchServiceList.rejected, (state, action: any) => {
+      .addCase(fetchAccountList.rejected, (state, action: any) => {
         Object.assign(state, {
           isLoading: false,
           status: "failed",
@@ -56,4 +56,4 @@ const ServiceSlice = createSlice({
   },
 });
 
-export default ServiceSlice.reducer;
+export default accountSlice.reducer;

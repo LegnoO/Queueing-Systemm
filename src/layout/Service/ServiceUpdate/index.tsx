@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Checkbox } from '@mui/material';
 import { Service } from '~/types/Api';
 import { useAppDispatch } from '~/app/store';
-import { addService,updateService } from '~/services/api';
+import { addService, updateService } from '~/services/api';
 import { Link, useLocation } from 'react-router-dom';
 import { ServiceListType } from '~/types/Api';
 import Header from '~/layout/Header';
@@ -49,9 +49,9 @@ const ServiceUpdate = () => {
               className={cx(
                 'form-input',
                 'row',
-                'gap-6',
+                'gap-4',
                 'flex-nowrap',
-                'mb-7',
+                'mb-3',
               )}
             >
               <div className={cx('form-field', 'col-2')}>
@@ -82,7 +82,7 @@ const ServiceUpdate = () => {
             </div>
 
             <h4 className={cx('title')}>Quy tắc cấp số</h4>
-            <div className={cx('form-rule', 'd-flex', 'flex-column', 'gap-5')}>
+            <div className={cx('form-rule', 'd-flex', 'flex-column', 'gap-3')}>
               <div
                 className={cx(
                   'form-rule-item',
@@ -103,9 +103,9 @@ const ServiceUpdate = () => {
                   />
                   <h6>Tăng tự động từ:</h6>
                 </div>
-                <div className="col d-flex align-items-center gap-3">
+                <div className="col d-flex align-items-center">
                   <div className={cx('box-number')}>0001</div>
-                  <h6>Đến</h6>
+                  <h6 className="mx-2">Đến</h6>
                   <div className={cx('box-number')}>9999</div>
                 </div>
               </div>
@@ -165,6 +165,10 @@ const ServiceUpdate = () => {
                 </div>
               </div>
             </div>
+            <div className="text-muted mt-3">
+              <span className={cx('warning-require')}>*</span>Là những thông tin
+              bắt buộc
+            </div>
           </div>
         </div>
         <div className={cx('action-button')}>
@@ -172,8 +176,10 @@ const ServiceUpdate = () => {
             Hủy bỏ
           </Button>
           <Button
-            onClick={() => {updateService(serviceData.id,formData)}}
- 
+            to="/service-list"
+            onClick={() => {
+              updateService(serviceData.id, formData);
+            }}
             className={cx('action-button__primary')}
           >
             Cập nhật

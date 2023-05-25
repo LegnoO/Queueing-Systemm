@@ -21,6 +21,16 @@ type ObjectWithIndex = {
   [key: string]: string[];
 };
 
+type DataProps = {
+  time: {
+    start: Date;
+    end: Date;
+  };
+  SERVICE: string[];
+  STATUS: string[];
+  SOURCE: string[];
+};
+
 const ReportList = () => {
   const [serviceList, setServiceList] = useState<string[]>([]);
   const dispatch = useAppDispatch();
@@ -39,13 +49,17 @@ const ReportList = () => {
     STATUS: ['Đang chờ', 'Đã sử dụng', 'Bỏ qua'],
     SOURCE: ['Kiosk', 'Hệ thống'],
   };
-
-  const [dataFilter, setDataFilter] = useState<ObjectWithIndex>({
+  const [dataFilter, setDataFilter] = useState<DataProps>({
+    time: {
+      start: new Date(),
+      end: new Date(),
+    },
     SERVICE: MENU.SERVICE,
     STATUS: MENU.STATUS,
     SOURCE: MENU.SOURCE,
   });
 
+  // console.log(sequenceData, dataFilter.time.sstart.getTime());
   const CONTENT_TITLES: pathType[] = [
     { text: 'Báo cáo' },
     { text: 'Lập báo cáo' },
@@ -67,7 +81,6 @@ const ReportList = () => {
       setDataFilter((prev) => ({ ...prev, [name]: [value] }));
     }
   };
-  console.log(dataFilter);
 
   const handleFetchData = (): void => {
     dispatch(fetchSequenceList());
@@ -76,10 +89,15 @@ const ReportList = () => {
   useEffect(() => {
     setData(
       sequenceData?.filter((sequence: SequenceListType) => {
+        const getTimeData = sequence.data.timestamp_start.seconds * 1000;
+        const getTimeFilter = dataFilter.time.start.getTime();
+        // console.log(sequence.data.timestamp_start.seconds, ' ', new Date());
+
         return (
           dataFilter.STATUS.includes(sequence.data.status) &&
           dataFilter.SOURCE.includes(sequence.data.source) &&
-          dataFilter.SERVICE.includes(sequence.data.service_name)
+          dataFilter.SERVICE.includes(sequence.data.service_name) &&
+          getTimeFilter >= getTimeData
         );
       }),
     );
@@ -101,14 +119,14 @@ const ReportList = () => {
                 <DatePicker
                   // required
                   defaultValue={dayjs()}
-                  value={dayjs()}
-                  // onChange={(date) =>
-                  //   date &&
-                  //   setDataFilter((prev) => ({
-                  //     ...prev,
-                  //     time: { ...prev.time, start: date.toDate() },
-                  //   }))
-                  // }
+                  value={dayjs(dataFilter.time.start)}
+                  onChange={(date) =>
+                    date &&
+                    setDataFilter((prev) => ({
+                      ...prev,
+                      time: { ...prev.time, start: date.toDate() },
+                    }))
+                  }
                   sx={{
                     '&': {
                       background: '#FFF',
@@ -133,14 +151,14 @@ const ReportList = () => {
                 <DatePicker
                   // required
                   defaultValue={dayjs()}
-                  value={dayjs()}
-                  // onChange={(date) =>
-                  //   date &&
-                  //   setDataFilter((prev) => ({
-                  //     ...prev,
-                  //     time: { ...prev.time, end: date.toDate() },
-                  //   }))
-                  // }
+                  value={dayjs(dataFilter.time.end)}
+                  onChange={(date) =>
+                    date &&
+                    setDataFilter((prev) => ({
+                      ...prev,
+                      time: { ...prev.time, end: date.toDate() },
+                    }))
+                  }
                   sx={{
                     '&': {
                       background: '#FFF',
@@ -422,7 +440,19 @@ const ReportList = () => {
                       <td>
                         <span>{sequence.data.service_name}</span>
                       </td>
-                      <td>{/* <span>{sequence.data.time}</span> */}</td>
+                      <td>
+                        <span>
+                          {formatTimeStampToTime(
+                            sequence.data.timestamp_start.seconds,
+                            'HH:mm',
+                          )}
+                          {' - '}
+                          {formatTimeStampToDate(
+                            sequence.data.timestamp_start.seconds,
+                            'DD/MM/YYYY',
+                          )}
+                        </span>
+                      </td>
                       <td>
                         <span>{sequence.data.status}</span>
                       </td>

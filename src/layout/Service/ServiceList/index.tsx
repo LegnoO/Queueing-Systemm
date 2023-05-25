@@ -31,6 +31,7 @@ const ServiceList = () => {
     MENU_ACTIVE: ['Hoạt động', 'Ngưng hoạt động'],
     SEARCH_TERM: '',
   });
+  const MENU_ACTIVE = ['Tất cả', 'Hoạt động', 'Ngưng hoạt động'];
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -51,8 +52,6 @@ const ServiceList = () => {
 
     navigate('/service-update', { state: { service: serviceDetail } });
   };
-
-  const MENU_ACTIVE = ['Tất cả', 'Hoạt động', 'Ngưng hoạt động'];
 
   const handleFilterData = (event: SelectChangeEvent) => {
     type ObjectWithIndex = {
@@ -77,7 +76,7 @@ const ServiceList = () => {
 
   useEffect(() => {
     setData(
-      serviceData?.filter((service: ServiceListType) => {
+      serviceData.filter((service: ServiceListType) => {
         return (
           dataFilter.MENU_ACTIVE.includes(service.data.active_status) &&
           service.data.serial.includes(dataFilter.SEARCH_TERM)
@@ -91,6 +90,7 @@ const ServiceList = () => {
   };
 
   useEffect(() => {
+    console.log('re render');
     handleFetchData();
   }, []);
 
@@ -172,6 +172,7 @@ const ServiceList = () => {
                     '&.MuiFormControl-root .MuiInputBase-input': {
                       padding: '12px 13px',
                       width: '86px',
+                      border: 'none',
                     },
                   }}
                   format="DD/MM/YYYY"
@@ -195,6 +196,7 @@ const ServiceList = () => {
                     '&.MuiFormControl-root .MuiInputBase-input': {
                       padding: '12px 13px',
                       width: '86px',
+                      border: 'none',
                     },
                   }}
                   format="DD/MM/YYYY"
@@ -242,12 +244,20 @@ const ServiceList = () => {
                       <td>
                         <p className={cx('status')}>
                           <span className={cx('circle-icon')}>
-                            <CircleIcon color="success" />
+                            <CircleIcon
+                              color={
+                                service.data.active_status === 'Hoạt động'
+                                  ? 'success'
+                                  : service.data.active_status ===
+                                    'Ngưng hoạt động'
+                                  ? 'error'
+                                  : undefined
+                              }
+                            />
                           </span>
                           <span>{service.data.active_status}</span>
                         </p>
                       </td>
-
                       <td>
                         <span
                           onClick={() => {

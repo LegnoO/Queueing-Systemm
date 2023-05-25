@@ -1,3 +1,7 @@
-const num = "201002"
+/** @format */
 
-console.log(num.startsWith("2010", 0))
+const num = "201002";
+
+console.log(num.startsWith("2010", 0));
+
+

@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 const DeviceUpdate = () => {
   const location = useLocation();
   const deviceData = location.state.device[0];
-
+  console.log(deviceData.data);
   const [service, setService] = useState<string[]>(
     splitString(deviceData.data.service_usage, ','),
   );
@@ -28,7 +28,6 @@ const DeviceUpdate = () => {
     setService(newData);
     setFormData((prev) => ({ ...prev, service_usage: newData.join(',') }));
   };
-
 
   const [formData, setFormData] = useState<Device>(deviceData.data);
 
@@ -60,7 +59,9 @@ const DeviceUpdate = () => {
           <div className={cx('device-info')}>
             <div className={cx('device-info__top')}>
               <div>
-                <label htmlFor="">Mã thiết bị</label>
+                <label htmlFor="">
+                  Mã thiết bị<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
@@ -70,7 +71,9 @@ const DeviceUpdate = () => {
                   type="text"
                   placeholder="Nhập mã thiết bị"
                 />
-                <label htmlFor="">Tên thiết bị</label>
+                <label htmlFor="">
+                  Tên thiết bị<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
@@ -80,7 +83,9 @@ const DeviceUpdate = () => {
                   name="device_name"
                   placeholder="Nhập tên thiết bị"
                 />
-                <label htmlFor="">Địa chỉ IP</label>
+                <label htmlFor="">
+                  Địa chỉ IP<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
@@ -92,7 +97,10 @@ const DeviceUpdate = () => {
                 />
               </div>
               <div>
-                <label htmlFor="">Chọn loại thiết bị</label>
+                <label htmlFor="">
+                  Chọn loại thiết bị
+                  <span className={cx('warning-require')}>*</span>
+                </label>
                 <Select
                   onChange={(event: SelectChangeEvent) => {
                     handleSelectChange(event);
@@ -139,7 +147,9 @@ const DeviceUpdate = () => {
                   <MenuItem value="Kiosk">Kiosk</MenuItem>
                   <MenuItem value="Display counter">Display counter</MenuItem>
                 </Select>
-                <label htmlFor="">Tên đăng nhập</label>
+                <label htmlFor="">
+                  Tên đăng nhập<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
@@ -149,7 +159,9 @@ const DeviceUpdate = () => {
                   name="username"
                   placeholder="Nhập tài khoản"
                 />
-                <label htmlFor="">Nhập mật khẩu</label>
+                <label htmlFor="">
+                  Nhập mật khẩu<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
@@ -162,7 +174,9 @@ const DeviceUpdate = () => {
               </div>
             </div>
             <div className={cx('device-info__bottom', 'form-field')}>
-              <label htmlFor="">Dịch vụ sử dụng</label>
+              <label htmlFor="">
+                Dịch vụ sử dụng<span className={cx('warning-require')}>*</span>
+              </label>
               <div>
                 <div className={cx('service__usage-container')}>
                   {service.map((device: string, index: number) => {
@@ -183,11 +197,12 @@ const DeviceUpdate = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-3 w-100 text-muted"><span className={cx("warning-require")}>*</span>Là trường thông tin bắt buộc</div>
           </div>
         </div>
 
         <div className={cx('action-button')}>
-          <Button to="/device" className={cx('action-button__cancel')}>
+          <Button to="/device-list" className={cx('action-button__cancel')}>
             Hủy bỏ
           </Button>
           <Button

@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-import { DeviceListType, ServiceListType, SequenceListType, Device, Service, Sequence } from "../types/Api"
+import { DeviceListType, ServiceListType, SequenceListType, Device, Service, Sequence, RoleListType, Role, AccountListType, Account } from "../types/Api"
 
 export interface User {
   data: {
@@ -64,6 +64,35 @@ export const fetchSequence = async (): Promise<SequenceListType[]> => {
   }
 };
 
+export const fetchRole = async (): Promise<RoleListType[]> => {
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      collection(db, "role-list")
+    );
+    const result: RoleListType[] = querySnapshot.docs.map((doc) => ({
+      data: doc.data() as RoleListType["data"],
+      id: doc.id,
+    }));
+    return result
+  } catch (error: any) {
+    return error
+  }
+};
+
+export const fetchAccount = async (): Promise<AccountListType[]> => {
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      collection(db, "account-list")
+    );
+    const result: AccountListType[] = querySnapshot.docs.map((doc) => ({
+      data: doc.data() as AccountListType["data"],
+      id: doc.id,
+    }));
+    return result
+  } catch (error: any) {
+    return error
+  }
+};
 
 
 export const fetchUser = async (): Promise<User[]> => {
@@ -137,5 +166,49 @@ export const updateSequence = (id: string, data: Sequence): void => {
     timestamp_end: data.timestamp_end,
     status: data.status,
     source: data.source,
+  })
+};
+
+export const updateRole = (id: string, data: Role): void => {
+  updateDoc(doc(db, "role-list", id), {
+    ...data,
+    role_name: data.role_name,
+    member: data.member,
+    describe: data.describe,
+    feature_a: data.feature_a,
+    feature_b: data.feature_b
+  })
+};
+
+export const addRole = async (data: Role): Promise<void> => {
+  try {
+    await addDoc(collection(db, "role-list"), {
+      ...data, member: 6,
+    }).then(response => console.log(response))
+  } catch (error: any) {
+    console.log(error)
+  }
+};
+
+export const addAccount = async (data: Account): Promise<void> => {
+  try {
+    await addDoc(collection(db, "account-list"), {
+      ...data,
+    }).then(response => console.log(response))
+  } catch (error: any) {
+    console.log(error)
+  }
+};
+
+export const updateAccount = (id: string, data: Account): void => {
+  updateDoc(doc(db, "account-list", id), {
+    full_name: data.full_name,
+    phone_number: data.phone_number,
+    email: data.email,
+    role: data.role,
+    username: data.username,
+    password: data.password,
+    confirm_password: data.confirm_password,
+    status: data.active_status,
   })
 };
