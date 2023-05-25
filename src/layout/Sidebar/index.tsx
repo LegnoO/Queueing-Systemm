@@ -3,27 +3,36 @@
 import { images } from '~/assets/images';
 import styles from './Sidebar.module.scss';
 import Button from '~/components/Button';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
+import { Subtitles } from '@mui/icons-material';
 
 const cx = classNames.bind(styles);
 
 interface ButtonMenuProps {
   title: string;
+  subTitle?: { title: string; to?: string }[] | undefined;
   to?: string;
   menu?: React.ReactElement;
   endIcon?: React.ReactElement;
 }
 
 const Sidebar = () => {
+  const location = useLocation();
   const [isActive, setIsActive] = useState<number | null>(null);
-
+  console.log(location.pathname);
   const handleClick = (id: number): void => {
     setIsActive(id);
   };
+
+  const subTitle = [
+    { title: 'Quản lý vai trò', to: '/role-list' },
+    { title: 'Quản lý tài khoản', to: '/account-list' },
+    { title: 'Nhật ký người dùng', to: '/activity' },
+  ];
 
   const BUTTON_MENU: ButtonMenuProps[] = [
     {
@@ -36,19 +45,26 @@ const Sidebar = () => {
     { title: 'Báo cáo', to: '/report-list' },
     {
       title: 'Cài đặt hệ thống',
+      subTitle: subTitle,
+
       endIcon: (
         <div className={cx('d-flex', 'dropdown-icon')}>
           <MoreVertIcon />
           <div className={cx('dropdown-menu')}>
             <ul className="d-flex flex-column">
-              <li>
-                <Link to="/role-list">Quản lý vai trò</Link>
-              </li>
-              <li>   
-                <Link to="/account-list">Quản lý tài khoản</Link>
-                </li>
-           
-              <li>Nhật ký người dùng</li>
+              {subTitle.map((value, index) => {
+                return (
+                  <Link key={index} to={value.to}>
+                    <li
+                      className={cx('button_menu', 'button_menu-dropdown', {
+                        active: location.pathname === value.to,
+                      })}
+                    >
+                      {value.title}
+                    </li>
+                  </Link>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -76,7 +92,22 @@ const Sidebar = () => {
                 onClick={() => handleClick(index)}
                 startIcon={<MoreTimeIcon />}
                 endIcon={value.endIcon}
-                className={cx('button_menu', { active: index === isActive })}
+                // className={cx('button_menu', { active:  })}
+
+                //   subTitle.some((item) =>
+                //   location.pathname.includes(item.title),
+                // ),
+                className={cx(
+                  'button_menu',
+                  {
+                    active: location.pathname === value.to,
+                  },
+                  {
+                    last_button: subTitle.some((item) =>
+                      location.pathname.includes(item.to),
+                    ),
+                  },
+                )}
                 key={index}
               >
                 {value.title}

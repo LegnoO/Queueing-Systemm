@@ -31,6 +31,14 @@
   .content {
     .button_menu {
       position: relative;
+      &.button_menu-dropdown > * {
+        color: #6c757d;
+        // padding: 10px 12px 10px 16px;
+      }
+      &.last_button:last-child {
+        background-color: #ff7506;
+        color: #ffffff;
+      }
       .dropdown-menu {
         position: absolute;
         display: none;
@@ -43,14 +51,8 @@
         transform: translateX(100%);
         color: #7e7d88;
         text-align: start;
-        padding: 16px 12px;
         font-weight: 600;
         font-size: 16px;
-        ul {
-          li {
-            padding: 6px 0;
-          }
-        }
       }
       .dropdown-icon {
         padding-right: 7px;
@@ -63,6 +65,9 @@
       &.active {
         background-color: #ff7506;
         color: #ffffff;
+        & > * {
+          color: #ffffff;
+        }
       }
     }
   }
