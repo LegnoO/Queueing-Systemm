@@ -1,27 +1,42 @@
 import { pathType } from '~/types/Header';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Account } from '~/types/Api';
 import { useAppDispatch } from '~/app/store';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
 import Header from '~/layout/Header';
 import styles from './AccountUpdate.module.scss';
 import classNames from 'classnames/bind';
+
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 import { updateAccount } from '~/services/api';
+import { AccountListType } from '~/types/Api';
+import { fetchDataById } from '~/services/api';
+import { RouteParams } from '~/types/Route';
 const cx = classNames.bind(styles);
 
 const AccountUpdate = () => {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
-  const accountData = location.state.account[0];
-  const [formData, setFormData] = useState<Account>(accountData.data);
+  const { id } = useParams<RouteParams>() as { id: string };
+
+  const [accountData, setAccountData] = useState<AccountListType | undefined>();
+  const [formData, setFormData] = useState<Account>({
+    full_name: '',
+    phone_number: '',
+    email: '',
+    role: '',
+    username: '',
+    password: '',
+    confirm_password: '',
+    active_status: '',
+  });
+
   const CONTENT_TITLES: pathType[] = [
     { text: 'Cài đặt hệ thống' },
     { text: 'Quản lý tài khoản', to: '/account-list' },
     { text: 'Cập nhật tài khoản' },
   ];
+
   const STATUS_MENU = ['Ngưng hoạt động', 'Hoạt động'];
   const ROLE_MENU = ['Kế toán', 'Quản lý', 'Admin'];
 
@@ -29,12 +44,27 @@ const AccountUpdate = () => {
     const { value, name } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleSelectChange = (event: SelectChangeEvent): void => {
     const { value, name } = event.target;
     console.log({ value, name });
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleUpdateAccount = (id: string | undefined, data: Account): void => {
+    if (id) {
+      updateAccount(id, data);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('account-list', id);
+      setAccountData(result);
+      setFormData(result.data);
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <Header path={CONTENT_TITLES} />;
@@ -50,7 +80,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Họ tên</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.full_name}
+                      defaultValue={accountData?.data.full_name}
                       name="full_name"
                       type="text"
                       placeholder="Nhập họ tên"
@@ -60,7 +90,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Số điện thoại</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.phone_number}
+                      defaultValue={accountData?.data.phone_number}
                       name="phone_number"
                       type="text"
                       placeholder="Nhập số điện thoại"
@@ -70,7 +100,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Email</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.email}
+                      defaultValue={accountData?.data.email}
                       name="email"
                       type="text"
                       placeholder="Nhập email"
@@ -130,7 +160,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Tên đăng nhập</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.username}
+                      defaultValue={accountData?.data.username}
                       name="username"
                       type="text"
                       placeholder="Nhập tên đăng nhập"
@@ -140,7 +170,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Mật khẩu</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.password}
+                      defaultValue={accountData?.data.password}
                       name="password"
                       type="password"
                       placeholder="Nhập mật khẩu"
@@ -150,7 +180,7 @@ const AccountUpdate = () => {
                     <label htmlFor="">Nhập lại mật khẩu</label>
                     <input
                       onChange={handleInputChange}
-                      defaultValue={accountData.data.confirm_password}
+                      defaultValue={accountData?.data.confirm_password}
                       name="confirm_password"
                       type="password"
                       placeholder="Nhập lại mật khẩu"
@@ -213,7 +243,7 @@ const AccountUpdate = () => {
             Hủy bỏ
           </Button>
           <Button
-            onClick={() => updateAccount(accountData.id, formData)}
+            onClick={() => handleUpdateAccount(accountData?.id, formData)}
             to="/account-list"
             className={cx('action-button__primary')}
           >

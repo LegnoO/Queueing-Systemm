@@ -1,4 +1,14 @@
 @import '../../../components/GlobalStyles/base.scss';
 
 .wrapper {
+  .content {
+    .form-container {
+      height: 600px;
+      width: 100%;
+      margin-right: -80px;
+      .action-button {
+        margin-top: 80px;
+      }
+    }
+  }
 }

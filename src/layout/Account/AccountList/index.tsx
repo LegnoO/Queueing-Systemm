@@ -11,6 +11,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { fetchAccountList } from '~/features/accountSlice';
 import classNames from 'classnames/bind';
 import Search from '~/components/Search';
+import ReactPaginate from 'react-paginate';
 const cx = classNames.bind(styles);
 
 interface AccountFilter {
@@ -19,12 +20,25 @@ interface AccountFilter {
 }
 
 const AccountList = () => {
+  const ROLE_MENU = ['Kế toán', 'Quản lý', 'Admin'];
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const accountData = useAppSelector((state) => state.account.data);
   const [data, setData] = useState<AccountListType[]>([]);
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<AccountListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(pagesVisited, pagesVisited + dataPerPage);
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
+
   const [dataFilter, setDataFilter] = useState<AccountFilter>({
-    ROLE_MENU: ['Kế toán', 'Quản lý', 'Admin'],
+    ROLE_MENU: ROLE_MENU,
     SEARCH_TERM: '',
   });
 
@@ -32,41 +46,61 @@ const AccountList = () => {
     { text: 'Cài đặt hệ thống' },
     { text: 'Quản lý tài khoản' },
   ];
-  const ROLE_MENU = ['Kế toán', 'Quản lý', 'Admin'];
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    // setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
+    setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
   };
   const handleMoveToUpdate = (id: string): void => {
-    const accountUpdate = accountData.filter(
-      (account: AccountListType) => account.id === id,
-    );
-
-    navigate('/account-update', { state: { account: accountUpdate } });
+    navigate(`/account-update/${id}`);
   };
 
   const handleFetchData = (): void => {
     dispatch(fetchAccountList());
+  };
+
+  const handleFilterData = (event: SelectChangeEvent) => {
+    type ObjectWithIndex = {
+      [key: string]: string[];
+    };
+
+    const object: ObjectWithIndex = {
+      ROLE_MENU: ROLE_MENU,
+    };
+
+    const { value, name } = event.target as { value: string; name: string };
+
+    if (value === 'Tất cả') {
+      setDataFilter((prev) => ({
+        ...prev,
+        [name]: object[name].filter((value) => value !== 'Tất cả'),
+      }));
+    } else {
+      setDataFilter((prev) => ({ ...prev, [name]: [value] }));
+    }
   };
   useEffect(() => {
     handleFetchData();
   }, []);
 
   useEffect(() => {
-    // setData(
-    //   serviceData?.filter((service: ServiceListType) => {
-    //     return (
-    //       dataFilter.MENU_ACTIVE.includes(service.data.active_status) &&
-    //       service.data.serial.includes(dataFilter.SEARCH_TERM)
-    //     );
-    //   }),
-    // );
-    setData(accountData);
+    setData(
+      accountData?.filter((account: AccountListType) => {
+        return (
+          dataFilter.ROLE_MENU.includes(account.data.role) &&
+          account.data.username.includes(dataFilter.SEARCH_TERM)
+        );
+      }),
+    );
+    // setData(accountData);
   }, [accountData, dataFilter]);
+
+  useEffect(() => {
+    setSearchTerm(data);
+  }, [data]);
 
   return (
     <>
-      <Header path={CONTENT_TITLES} />
+      <Header path={CONTENT_TITLES} openDrop={true} />
       <div className={cx('wrapper')}>
         <div className={cx('inner')}>
           <h3 className={cx('header-title')}>Danh sách tài khoản</h3>
@@ -107,9 +141,7 @@ const AccountList = () => {
                       },
                     },
                   ]}
-                  onChange={(event: SelectChangeEvent) => {
-                    // handleFilterData(event);
-                  }}
+                  onChange={handleFilterData}
                   defaultValue="Tất cả"
                   name="ROLE_MENU"
                 >
@@ -126,10 +158,8 @@ const AccountList = () => {
               <div className={cx('form-field')}>
                 <label>Từ khóa</label>
                 <Search
-                  className={cx('test2')}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    handleSearch(event);
-                  }}
+                  placeholder='Nhập Username'
+                  onChange={handleSearch}
                 />
               </div>
             </div>
@@ -147,7 +177,7 @@ const AccountList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((content) => {
+                  {currentPageData?.map((content) => {
                     return (
                       <tr key={content.id}>
                         <td>
@@ -201,6 +231,18 @@ const AccountList = () => {
               </div>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+          />
         </div>
       </div>
     </>

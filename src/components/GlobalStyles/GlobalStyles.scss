@@ -88,7 +88,10 @@ tr {
 .text-end {
   text-align: end;
 }
-
+.text-underline {
+  color: #4277ff !important;
+  text-decoration: underline !important;
+}
 /* ------------------  ------------------ */
 .pointer {
   cursor: pointer;

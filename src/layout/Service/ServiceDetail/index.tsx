@@ -4,9 +4,11 @@ import { pathType } from '~/types/Header';
 import { useEffect, useState } from 'react';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 import { fetchServiceList } from '~/features/serviceSlice';
 import { ServiceListType } from '~/types/Api';
+import { RouteParams } from '~/types/Route';
+import { fetchDataById } from '~/services/api';
 import Search from '~/components/Search';
 import { useAppSelector, useAppDispatch } from '~/app/store';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -22,11 +24,20 @@ interface ServiceFilter {
 }
 
 const ServiceDetail = () => {
+  const { id } = useParams<RouteParams>() as { id: string };
   const dispatch = useAppDispatch();
   const serviceData = useAppSelector((state) => state.service.data);
   const navigate = useNavigate();
-  const location = useLocation();
-  const serviceDataDetail = location.state.service[0];
+  const [serviceDataDetail, setServiceDataDetail] = useState<
+    ServiceListType | undefined
+  >();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('service-list', id);
+      setServiceDataDetail(result);
+    };
+    fetchData();
+  }, []);
   const CONTENT_TITLES: pathType[] = [
     { text: 'Dịch vụ' },
     { text: 'Danh sách dịch vụ', to: '/service-list' },
@@ -38,21 +49,9 @@ const ServiceDetail = () => {
     SEARCH_TERM: '',
   });
 
-  // const handleMoveToDetail = (id: string): void => {
-  //   const serviceDetail = serviceData.filter(
-  //     (service: ServiceListType) => service.id === id,
-  //   );
-
-  //   navigate('/service-detail', { state: { service: serviceDetail } });
-  // };
-
-  // const handleMoveToUpdate = (id: string): void => {
-  //   const serviceDetail = serviceData.filter(
-  //     (service: ServiceListType) => service.id === id,
-  //   );
-
-  //   navigate('/service-update', { state: { service: serviceDetail } });
-  // };
+  const handleMoveToUpdate = (id: string | undefined): void => {
+    navigate(`/service-update/${id}`);
+  };
 
   const MENU_STATUS = ['Tất cả', 'Đã hoàn thành', 'Đã thực hiện', 'Vắng'];
 
@@ -82,7 +81,7 @@ const ServiceDetail = () => {
       serviceData.filter((service: ServiceListType) => {
         return (
           dataFilter.MENU_STATUS.includes(service.data.status) &&
-          service.data.serial.includes(dataFilter.SEARCH_TERM)
+          service?.data?.serial?.includes(dataFilter.SEARCH_TERM)
         );
       }),
     );
@@ -114,26 +113,26 @@ const ServiceDetail = () => {
                 <div className="row">
                   <p className={cx('col-3')}>Mã dịch vụ:</p>
                   <span className={cx('col')}>
-                    {serviceDataDetail.data.service_id}
+                    {serviceDataDetail?.data.service_id}
                   </span>
                 </div>
                 <div className="row">
                   <p className={cx('col-3')}>Tên dịch vụ:</p>
                   <span className={cx('col')}>
-                    {serviceDataDetail.data.service_name}
+                    {serviceDataDetail?.data.service_name}
                   </span>
                 </div>
                 <div className="row">
                   <p className={cx('col-3')}>Mô tả:</p>
                   <span className={cx('col')}>
-                    {serviceDataDetail.data.describe}
+                    {serviceDataDetail?.data.describe}
                   </span>
                 </div>
               </div>
               <div className={cx('rule', 'mb-4')}>
                 <h4 className={cx('title', 'mb-3')}>Quy tắc cấp số</h4>
                 <div className="row gap-3 flex-column">
-                  {serviceDataDetail.data.auto_increase ? (
+                  {serviceDataDetail?.data.auto_increase ? (
                     <div className="row gap-3 align-items-center w-100">
                       <p className={cx('col-3')}>Tăng tự động:</p>
                       <span className={cx('col d-flex align-items-center')}>
@@ -145,7 +144,7 @@ const ServiceDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {serviceDataDetail.data.prefix ? (
+                  {serviceDataDetail?.data.prefix ? (
                     <div className="row gap-3 align-items-center w-100">
                       <p className="col-3">Prefix:</p>
                       <div className={cx('box-number', 'text-muted')}>001</div>
@@ -153,7 +152,7 @@ const ServiceDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {serviceDataDetail.data.reset ? (
+                  {serviceDataDetail?.data.reset ? (
                     <div>
                       <p>Reset mỗi ngày</p>
                       <p className={cx('mt-3', 'text-muted')}>
@@ -319,14 +318,15 @@ const ServiceDetail = () => {
                   </tbody>
                 </table>
                 <div className={cx('service-btn-container')}>
-                  <Link to="/service-update">
-                    <button>
-                      <span>
-                        <AddBoxIcon />
-                      </span>
-                      <span>Cập nhật danh sách</span>
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => handleMoveToUpdate(serviceDataDetail?.id)}
+                  >
+                    <span>
+                      <AddBoxIcon />
+                    </span>
+                    <span>Cập nhật danh sách</span>
+                  </button>
+
                   <Link to="/service-list">
                     <button>
                       <span>

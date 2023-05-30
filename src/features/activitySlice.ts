@@ -1,45 +1,44 @@
 /** @format */
-import { DeviceListType } from "../types/Api";
-import { fetchDevice, fetchDataById } from "../services/api"
+import { ActivityListType } from "../types/Api";
+import { fetchActivity } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchDeviceList = createAsyncThunk(
-  "firebase/fetchDevice",
-  fetchDevice
+export const fetchActivityList = createAsyncThunk(
+  "firebase/fetchActivity",
+  fetchActivity
 );
 
-
-interface DeviceState {
-  data: DeviceListType[];
+interface ActivityState {
+  data: ActivityListType[];
   status: "idle" | "pending" | "succeeded" | "failed";
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: DeviceState = {
+const initialState: ActivityState = {
   data: [],
   status: "idle",
   isLoading: false,
   error: null,
 };
 
-const deviceSlice = createSlice({
-  name: "device",
+const ActivitySlice = createSlice({
+  name: "activity",
   initialState,
   reducers: {
 
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDeviceList.pending, (state) => {
+      .addCase(fetchActivityList.pending, (state) => {
         Object.assign(state, {
           isLoading: true,
           status: "pending",
         });
       })
       .addCase(
-        fetchDeviceList.fulfilled,
-        (state, action: PayloadAction<DeviceListType[]>) => {
+        fetchActivityList.fulfilled,
+        (state, action: PayloadAction<ActivityListType[]>) => {
           Object.assign(state, {
             isLoading: false,
             status: "succeeded",
@@ -47,14 +46,14 @@ const deviceSlice = createSlice({
           });
         }
       )
-      .addCase(fetchDeviceList.rejected, (state, action: any) => {
+      .addCase(fetchActivityList.rejected, (state, action: any) => {
         Object.assign(state, {
           isLoading: false,
           status: "failed",
           error: action.error.message,
         });
-      })
+      });
   },
 });
 
-export default deviceSlice.reducer;
+export default ActivitySlice.reducer;

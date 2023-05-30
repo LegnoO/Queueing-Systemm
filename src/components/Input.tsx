@@ -6,6 +6,7 @@ interface InputProps {
   className?: string;
   name?: string;
   defaultValue?:string;
+  placeholder?:string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -15,12 +16,14 @@ const Input: React.FC<InputProps> = ({
   className,
   name,
   defaultValue,
+  placeholder,
 }) => {
   return (
     <input
       className={className}
       disabled={disabled ? true : false}
       // icon={icon || undefined}
+      placeholder={placeholder}
       defaultValue={defaultValue}
       name={name}
       onChange={onChange || undefined}

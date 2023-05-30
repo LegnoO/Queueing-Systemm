@@ -15,6 +15,9 @@ const ServiceAdd = () => {
   const dispatch = useAppDispatch();
 
   const [dataForm, setDataForm] = useState<Service>({
+    status: '',
+    active_status: '',
+    serial: '',
     service_id: '',
     describe: '',
     service_name: '',

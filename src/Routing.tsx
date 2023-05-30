@@ -27,7 +27,7 @@ import { SequenceList, SequenceDetail, SequenceAdd } from './layout/Sequence';
 import { ReportList } from './layout/Report';
 
 import { RoleList, RoleUpdate, RoleAdd } from './layout/Role';
-import { AccountList, AccountAdd, AccountUpdate } from './layout/Account';
+import { AccountList, AccountAdd, AccountUpdate ,AccountInfo} from './layout/Account';
 import ActivityLog from '~/layout/ActivityLog';
 
 const Routing = () => {
@@ -44,23 +44,24 @@ const Routing = () => {
     },
     {
       component: <DeviceDetail />,
-      path: '/device-detail',
+      path: '/device-detail/:id',
+    },
+    {
+      component: <DeviceUpdate />,
+      path: '/device-update/:id',
     },
     {
       component: <DeviceAdd />,
       path: '/device-add',
     },
-    {
-      component: <DeviceUpdate />,
-      path: '/device-update',
-    },
+
     {
       component: <ServiceList />,
       path: '/service-list',
     },
     {
       component: <ServiceDetail />,
-      path: '/service-detail',
+      path: '/service-detail/:id',
     },
     {
       component: <ServiceAdd />,
@@ -68,7 +69,7 @@ const Routing = () => {
     },
     {
       component: <ServiceUpdate />,
-      path: '/service-update',
+      path: '/service-update/:id',
     },
     {
       component: <SequenceList />,
@@ -76,7 +77,7 @@ const Routing = () => {
     },
     {
       component: <SequenceDetail />,
-      path: '/sequence-detail',
+      path: '/sequence-detail/:id',
     },
     {
       component: <SequenceAdd />,
@@ -92,11 +93,15 @@ const Routing = () => {
     },
     {
       component: <RoleUpdate />,
-      path: '/role-update',
+      path: '/role-update/:id',
     },
     {
       component: <RoleAdd />,
       path: '/role-add',
+    },
+    {
+      component: <AccountInfo />,
+      path: '/account-info',
     },
     {
       component: <AccountList />,
@@ -108,7 +113,7 @@ const Routing = () => {
     },
     {
       component: <AccountUpdate />,
-      path: '/account-update',
+      path: '/account-update/:id',
     },
     {
       component: <ActivityLog />,

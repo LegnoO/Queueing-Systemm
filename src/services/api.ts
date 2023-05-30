@@ -4,11 +4,14 @@ import {
   collection,
   getDocs,
   QuerySnapshot,
-  DocumentData, addDoc, updateDoc, doc
+  DocumentData, addDoc, updateDoc, doc,
+  getDoc,
+  DocumentSnapshot
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-import { DeviceListType, ServiceListType, SequenceListType, Device, Service, Sequence, RoleListType, Role, AccountListType, Account } from "../types/Api"
+
+import { DeviceListType, ServiceListType, SequenceListType, Device, Service, Sequence, RoleListType, Role, AccountListType, Account, ActivityListType } from "../types/Api"
 
 export interface User {
   data: {
@@ -29,6 +32,22 @@ export const fetchDevice = async (): Promise<DeviceListType[]> => {
       id: doc.id,
     }));
     return result
+  } catch (error: any) {
+    return error
+  }
+};
+
+export const fetchDataById = async (collection: string, documentId: string): Promise<any> => {
+  try {
+    const documentSnapshot: DocumentSnapshot<DocumentData> = await getDoc(
+      doc(db, collection, documentId)
+    );
+    if (documentSnapshot.exists()) {
+      const data = documentSnapshot.data();
+      return { id: documentSnapshot.id, data };
+    } else {
+      return null
+    }
   } catch (error: any) {
     return error
   }
@@ -94,6 +113,21 @@ export const fetchAccount = async (): Promise<AccountListType[]> => {
   }
 };
 
+export const fetchActivity = async (): Promise<ActivityListType[]> => {
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      collection(db, "activity-list")
+    );
+    const result: ActivityListType[] = querySnapshot.docs.map((doc) => ({
+      data: doc.data() as ActivityListType["data"],
+      id: doc.id,
+    }));
+    return result
+  } catch (error: any) {
+    return error
+  }
+};
+
 
 export const fetchUser = async (): Promise<User[]> => {
   const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
@@ -116,11 +150,35 @@ export const addDevice = async (data: Device): Promise<void> => {
   }
 };
 
+export const add = async (): Promise<void> => {
+  try {
+    await addDoc(collection(db, "sequence-list"), {
+      customer_name:
+        "Nguyễn Thị Dung",
+      email:
+        "nguyendung@gmail.com",
+      phone:
+        "0948523623",
+      service_name:
+        "Khám tai mũi họng",
+      source:
+        "Kiosk",
+      status:
+        "Đang chờ",
+      stt:
+        "1",
+        timestamp_start:new Date(2022,1,1),
+        timestamp_end:new Date()
+    })
+  } catch (error: any) {
+    console.log(error)
+  }
+};
 
 export const addService = async (data: Service): Promise<void> => {
   try {
     await addDoc(collection(db, "service-list"), {
-      active_status: "Ngưng hoạt động", serial: "2010002", status: "Hoàn thành", ...data,
+      data,
     }).then(response => console.log(response))
   } catch (error: any) {
     console.log(error)

@@ -4,24 +4,45 @@ import { Checkbox } from '@mui/material';
 import { Service } from '~/types/Api';
 import { useAppDispatch } from '~/app/store';
 import { addService, updateService } from '~/services/api';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ServiceListType } from '~/types/Api';
+import { RouteParams } from '~/types/Route';
+import { fetchDataById } from '~/services/api';
 import Header from '~/layout/Header';
 import styles from './ServiceUpdate.module.scss';
 import classNames from 'classnames/bind';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
+import { useEffect } from 'react';
 const cx = classNames.bind(styles);
 
 const ServiceUpdate = () => {
+  const { id } = useParams<RouteParams>() as { id: string };
   const dispatch = useAppDispatch();
-  const location = useLocation();
-  const serviceData = location.state.service[0];
-  const [formData, setFormData] = useState<Service>(serviceData.data);
+  const [serviceData, setServiceData] = useState<ServiceListType | undefined>();
+  const [formData, setFormData] = useState<Service>({
+    status: '',
+    active_status: '',
+    serial: '',
+    service_id: '',
+    describe: '',
+    service_name: '',
+    auto_increase: false,
+    prefix: false,
+    surfix: false,
+    reset: false,
+  });
+  console.log(formData);
   const CONTENT_TITLES: pathType[] = [
     { text: 'Dịch vụ' },
-    { text: 'Danh sách dịch vụ', to: '/service-list' },
-    { text: 'Chi tiết', to: '/service-detail' },
+    {
+      text: 'Danh sách dịch vụ',
+      to: '/service-list',
+    },
+    {
+      text: 'Chi tiết',
+      to: `/service-detail/${id}`,
+    },
     { text: 'Cập nhật' },
   ];
 
@@ -35,6 +56,15 @@ const ServiceUpdate = () => {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('service-list', id);
+      setServiceData(result);
+      setFormData(result.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -60,14 +90,14 @@ const ServiceUpdate = () => {
                   onChange={handleChangeData}
                   name="service_id"
                   className="w-100"
-                  defaultValue={serviceData.data.service_id}
+                  defaultValue={formData?.service_id}
                 />
                 <label>Tên dịch vụ</label>
                 <Input
                   onChange={handleChangeData}
                   name="service_name"
                   className="w-100"
-                  defaultValue={serviceData.data.service_name}
+                  defaultValue={formData?.service_name}
                 />
               </div>
               <div className={cx('form-field', 'col-2')}>
@@ -76,7 +106,7 @@ const ServiceUpdate = () => {
                   onChange={handleChangeData}
                   name="describe"
                   className="w-100 h-100"
-                  defaultValue={serviceData.data.describe}
+                  defaultValue={formData?.describe}
                 />
               </div>
             </div>
@@ -93,7 +123,7 @@ const ServiceUpdate = () => {
               >
                 <div className="col-2 d-flex align-items-center">
                   <Checkbox
-                    defaultChecked={serviceData.data.auto_increase}
+                    checked={formData.auto_increase}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setFormData((prev) => ({
                         ...prev,
@@ -115,7 +145,7 @@ const ServiceUpdate = () => {
               >
                 <div className="col-2 d-flex align-items-center">
                   <Checkbox
-                    defaultChecked={serviceData.data.prefix}
+                    checked={formData.prefix}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setFormData((prev) => ({
                         ...prev,
@@ -134,7 +164,7 @@ const ServiceUpdate = () => {
               >
                 <div className="col-2 d-flex align-items-center">
                   <Checkbox
-                    defaultChecked={serviceData.data.surfix}
+                    checked={formData.surfix}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setFormData((prev) => ({
                         ...prev,
@@ -153,7 +183,7 @@ const ServiceUpdate = () => {
               >
                 <div className="d-flex align-items-center">
                   <Checkbox
-                    defaultChecked={serviceData.data.reset}
+                    checked={formData.reset}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setFormData((prev) => ({
                         ...prev,
@@ -178,7 +208,7 @@ const ServiceUpdate = () => {
           <Button
             to="/service-list"
             onClick={() => {
-              updateService(serviceData.id, formData);
+              // updateService(serviceData.id, formData);
             }}
             className={cx('action-button__primary')}
           >

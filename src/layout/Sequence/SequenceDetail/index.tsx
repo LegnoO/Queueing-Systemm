@@ -1,23 +1,35 @@
 import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './SequenceDetail.module.scss';
 import CircleIcon from '@mui/icons-material/Circle';
 import classNames from 'classnames/bind';
-
 import AddBoxIcon from '@mui/icons-material/AddBox';
-
+import { SequenceListType } from '~/types/Api';
+import { useState, useEffect } from 'react';
+import { RouteParams } from '~/types/Route';
+import { fetchDataById } from '~/services/api';
 const cx = classNames.bind(styles);
 
 const SequenceDetail = () => {
+  const { id } = useParams<RouteParams>() as { id: string };
+  const [sequenceData, setSequenceData] = useState<
+    SequenceListType | undefined
+  >();
+
   const CONTENT_TITLES: pathType[] = [
     { text: 'cấp số' },
     { text: 'Danh sách cấp số', to: '/sequence-list' },
     { text: 'Chi tiết' },
   ];
 
-  const location = useLocation();
-  const sequenceData = location.state.sequence[0];
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('sequence-list', id);
+      setSequenceData(result);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -30,53 +42,83 @@ const SequenceDetail = () => {
             <div className={cx('sequence-info', 'row')}>
               <div className="col-2">
                 <div className="row">
-                  <div className={cx("sequence-info-item", "d-flex", "flex-column" ,"fw-bold","me-7")}>
+                  <div
+                    className={cx(
+                      'sequence-info-item',
+                      'd-flex',
+                      'flex-column',
+                      'fw-bold',
+                      'me-3',
+                    )}
+                  >
                     <p>Họ tên:</p>
                     <p>Tên dịch vụ:</p>
                     <p>Số thứ tự:</p>
                     <p>Thời gian cấp:</p>
                     <p>Hạn sử dụng:</p>
                   </div>
-                  <div className={cx("sequence-info-item", "d-flex", "flex-column" ,"fw-normal")}>
-                    <p>{sequenceData.data.customer_name}</p>
-                    <p>{sequenceData.data.service_name}</p>
-                    <p>{sequenceData.data.stt}</p>
-                    <p>{sequenceData.data.timestamp_start.seconds}</p>
-                    <p>{sequenceData.data.timestamp_end.seconds}</p>
+                  <div
+                    className={cx(
+                      'sequence-info-item',
+                      'd-flex',
+                      'flex-column',
+                      'fw-normal',
+                    )}
+                  >
+                    <p>{sequenceData?.data.customer_name}</p>
+                    <p>{sequenceData?.data.service_name}</p>
+                    <p>{sequenceData?.data.stt}</p>
+                    <p>{sequenceData?.data.timestamp_start.seconds}</p>
+                    <p>{sequenceData?.data.timestamp_end.seconds}</p>
                   </div>
                 </div>
               </div>
               <div className="col">
-              <div className="row">
-              <div className={cx("sequence-info-item","d-flex", "flex-column", "fw-bold", "me-7")}>
-                  <p>Nguồn cấp</p>
-                  <p>Trạng thái</p>
-                  <p>Số điện thoại</p>
-                  <p>Địa chỉ Email</p>
-                </div>
-                <div className={cx("sequence-info-item","d-flex", "flex-column", "fw-normal")}>
-                  <p>{sequenceData.data.source}</p>
+                <div className="row">
+                  <div
+                    className={cx(
+                      'sequence-info-item',
+                      'd-flex',
+                      'flex-column',
+                      'fw-bold',
+                      'me-3',
+                    )}
+                  >
+                    <p>Nguồn cấp</p>
+                    <p>Trạng thái</p>
+                    <p>Số điện thoại</p>
+                    <p>Địa chỉ Email</p>
+                  </div>
+                  <div
+                    className={cx(
+                      'sequence-info-item',
+                      'd-flex',
+                      'flex-column',
+                      'fw-normal',
+                    )}
+                  >
+                    <p>{sequenceData?.data.source}</p>
 
-                  <p>
-                    <span className={cx('circle-icon')}>
-                      <CircleIcon
-                        color={
-                          sequenceData.data.status === 'Đang chờ'
-                            ? 'info'
-                            : sequenceData.data.status === 'Đã sử dụng'
-                            ? undefined
-                            : sequenceData.data.status === 'Bỏ qua'
-                            ? 'error'
-                            : undefined
-                        }
-                      />
-                    </span>
-                    {sequenceData.data.status}
-                  </p>
-                  <p>{sequenceData.data.phone}</p>
-                  <p>{sequenceData.data.email}</p>
+                    <p>
+                      <span className={cx('circle-icon')}>
+                        <CircleIcon
+                          color={
+                            sequenceData?.data.status === 'Đang chờ'
+                              ? 'info'
+                              : sequenceData?.data.status === 'Đã sử dụng'
+                              ? undefined
+                              : sequenceData?.data.status === 'Bỏ qua'
+                              ? 'error'
+                              : undefined
+                          }
+                        />
+                      </span>
+                      {sequenceData?.data.status}
+                    </p>
+                    <p>{sequenceData?.data.phone}</p>
+                    <p>{sequenceData?.data.email}</p>
+                  </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>

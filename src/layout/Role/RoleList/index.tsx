@@ -11,18 +11,36 @@ import Header from '~/layout/Header';
 import styles from './RoleList.module.scss';
 import classNames from 'classnames/bind';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-
+import ReactPaginate from 'react-paginate';
 import Search from '~/components/Search';
 
 const cx = classNames.bind(styles);
 
 const RoleList = () => {
+  const [data, setData] = useState<RoleListType[]>([]);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const roleData = useAppSelector((state) => state.role.data);
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<RoleListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(
+    pagesVisited,
+    pagesVisited + dataPerPage,
+  );
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
+  const [dataFilter, setDataFilter] = useState<{ SEARCH_TERM: string }>({
+    SEARCH_TERM: '',
+  });
+
   const CONTENT_TITLES: pathType[] = [
-    { text: 'Cấp số' },
-    { text: 'Danh sách cấp số' },
+    { text: 'Cài đặt hệ thống' },
+    { text: 'Quản lý vai trò' },
   ];
 
   const handleFetchData = (): void => {
@@ -30,19 +48,28 @@ const RoleList = () => {
   };
 
   const handleMoveToUpdate = (id: string): void => {
-    const roleUpdate = roleData.filter((role) => role.id === id);
-
-    navigate('/role-update', { state: { role: roleUpdate } });
+    navigate(`/role-update/${id}`);
   };
 
-  // useEffect(() => {
-  //   setData();
-  // }, [roleData, dataFilter]);
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
+  };
+
+  useEffect(() => {
+    setData(
+      roleData.filter((content: RoleListType) => {
+        return content?.data?.role_name?.includes(dataFilter.SEARCH_TERM);
+      }),
+    );
+  }, [roleData, dataFilter]);
 
   useEffect(() => {
     handleFetchData();
   }, []);
 
+  useEffect(() => {
+    setSearchTerm(roleData);
+  }, [roleData]);
   return (
     <>
       <Header path={CONTENT_TITLES} />
@@ -55,14 +82,13 @@ const RoleList = () => {
               'gap-6',
             )}
           >
-            <h3 className={cx('header-title')}>Quản lý cấp số</h3>
+            <h3 className={cx('header-title')}>Danh sách vai trò</h3>
             <div className={cx('form-field')}>
               <label>Từ khóa</label>
               <Search
                 className={cx('search-bar')}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  // handleSearch(event);
-                }}
+                placeholder="Nhập role"
+                onChange={handleSearch}
               />
             </div>
           </div>
@@ -77,7 +103,7 @@ const RoleList = () => {
                 </tr>
               </thead>
               <tbody>
-                {roleData.map((data) => {
+                {currentPageData.map((data) => {
                   return (
                     <tr key={data.id}>
                       <td>
@@ -91,7 +117,10 @@ const RoleList = () => {
                         <span>{data.data.describe}</span>
                       </td>
                       <td>
-                        <span onClick={() => handleMoveToUpdate(data.id)}>
+                        <span
+                          className="text-underline pointer "
+                          onClick={() => handleMoveToUpdate(data.id)}
+                        >
                           Cập nhật
                         </span>
                       </td>
@@ -112,6 +141,18 @@ const RoleList = () => {
               </Link>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+          />
         </div>
       </div>
     </>

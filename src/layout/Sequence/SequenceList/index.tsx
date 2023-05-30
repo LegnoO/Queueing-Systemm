@@ -14,7 +14,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Search from '~/components/Search';
-
+import ReactPaginate from 'react-paginate';
 import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
@@ -46,7 +46,7 @@ const SequenceList = () => {
 
   const [dataFilter, setDataFilter] = useState<SequenceFilter>({
     time: {
-      start: new Date(),
+      start: new Date(2022, 1, 1),
       end: new Date(),
     },
     SEARCH_TERM: '',
@@ -59,6 +59,16 @@ const SequenceList = () => {
   const sequenceData = useAppSelector((state) => state.sequence.data);
 
   const [data, setData] = useState<SequenceListType[]>([]);
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<SequenceListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(pagesVisited, pagesVisited + dataPerPage);
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
 
   const handleFetchData = (): void => {
     dispatch(fetchSequenceList());
@@ -92,21 +102,27 @@ const SequenceList = () => {
   };
 
   const handleMoveToDetail = (id: string): void => {
-    const sequenceDetail = sequenceData.filter(
-      (sequence: SequenceListType) => sequence.id === id,
-    );
-
-    navigate('/sequence-detail', { state: { sequence: sequenceDetail } });
+    navigate(`/sequence-detail/${id}`);
   };
 
   useEffect(() => {
     setData(
       sequenceData?.filter((sequence: SequenceListType) => {
+        const timeDataStart = sequence.data.timestamp_start.seconds * 1000;
+        const timeDataEnd = sequence.data.timestamp_end.seconds * 1000;
+        const timeFilterStart = dataFilter.time.start.getTime();
+        const timeFilterEnd = dataFilter.time.end.getTime();
+
         return (
           dataFilter.MENU_STATUS.includes(sequence.data.status) &&
           dataFilter.MENU_SOURCE.includes(sequence.data.source) &&
           dataFilter.MENU_SERVICE.includes(sequence.data.service_name) &&
           sequence.data.customer_name.includes(dataFilter.SEARCH_TERM)
+          //  &&
+          // timeDataStart <= timeFilterStart &&
+          // timeDataStart >= timeFilterStart &&
+          // timeDataEnd <= timeFilterEnd &&
+          // timeDataEnd >= timeFilterEnd
         );
       }),
     );
@@ -116,13 +132,16 @@ const SequenceList = () => {
     handleFetchData();
   }, []);
 
+  useEffect(() => {
+    setSearchTerm(data);
+  }, [data]);
   return (
     <>
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
         <h3 className={cx('header-title')}>Quản lý cấp số</h3>
         <div className={cx('content')}>
-          <div className={cx('form-control', 'gap-6')}>
+          <div className={cx('form-control', 'gap-3')}>
             <div className={cx('form-field', 'col')}>
               <label>Tên dịch vụ</label>
               <Select
@@ -361,7 +380,7 @@ const SequenceList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((sequence) => {
+                {currentPageData?.map((sequence) => {
                   return (
                     <tr key={sequence.id}>
                       <td>
@@ -376,12 +395,12 @@ const SequenceList = () => {
                       <td>
                         <span>
                           {formatTimeStampToTime(
-                            sequenceData[0]?.data.timestamp_start.seconds,
+                            sequenceData[0].data.timestamp_start.seconds,
                             'HH:mm',
                           )}
                           {' - '}
                           {formatTimeStampToDate(
-                            sequenceData[0]?.data.timestamp_start.seconds,
+                            sequenceData[0].data.timestamp_start.seconds,
                             'DD-MM-YYYY',
                           )}
                         </span>
@@ -447,6 +466,18 @@ const SequenceList = () => {
               </Link>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+          />
         </div>
       </div>
     </>

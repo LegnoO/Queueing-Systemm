@@ -3,7 +3,12 @@ import { useAppSelector, useAppDispatch } from '~/app/store';
 import { Select, SelectChangeEvent, MenuItem, Checkbox } from '@mui/material';
 import { fetchSequenceList } from '~/features/sequenceSlice';
 import { SequenceListType } from '~/types/Api';
-import { formatTimeStampToTime, formatTimeStampToDate } from '~/util/date';
+import {
+  exportToExcel,
+  formatTimeStampToDate,
+  formatTimeStampToTime,
+} from '~/util/helpers';
+import ReactPaginate from 'react-paginate';
 import { DatePicker } from '@mui/x-date-pickers';
 import { pathType } from '~/types/Header';
 import Header from '~/layout/Header';
@@ -12,7 +17,7 @@ import classNames from 'classnames/bind';
 import CircleIcon from '@mui/icons-material/Circle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-
+import { add } from '~/services/api'; 
 import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
@@ -32,9 +37,20 @@ type DataProps = {
 };
 
 const ReportList = () => {
+  const [data, setData] = useState<SequenceListType[]>([]);
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<SequenceListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(pagesVisited, pagesVisited + dataPerPage);
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
+
   const [serviceList, setServiceList] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-  const [data, setData] = useState<SequenceListType[]>([]);
   const sequenceData = useAppSelector((state) => state.sequence.data);
   const MENU: ObjectWithIndex = {
     SERVICE: [
@@ -51,7 +67,7 @@ const ReportList = () => {
   };
   const [dataFilter, setDataFilter] = useState<DataProps>({
     time: {
-      start: new Date(),
+      start: new Date(2022,1,1),
       end: new Date(),
     },
     SERVICE: MENU.SERVICE,
@@ -86,18 +102,41 @@ const ReportList = () => {
     dispatch(fetchSequenceList());
   };
 
+  const handleConvertDataExcel = () => {
+    const newData = sequenceData.map(
+      ({
+        data: {
+          timestamp_start: { seconds: startDateSeconds },
+          timestamp_end: { seconds: endDateSeconds },
+          ...rest
+        },
+      }) => ({
+        ...rest,
+        timestamp_start: `${formatTimeStampToTime(
+          startDateSeconds,
+          'HH:mm',
+        )} - ${formatTimeStampToDate(startDateSeconds, 'DD-MM-YYYY')}`,
+        timestamp_end: `${formatTimeStampToTime(
+          endDateSeconds,
+          'HH:mm',
+        )} - ${formatTimeStampToDate(endDateSeconds, 'DD-MM-YYYY')}`,
+      }),
+    );
+    exportToExcel(newData, 'Excel export');
+  };
+
   useEffect(() => {
     setData(
       sequenceData?.filter((sequence: SequenceListType) => {
-        const getTimeData = sequence.data.timestamp_start.seconds * 1000;
-        const getTimeFilter = dataFilter.time.start.getTime();
-        // console.log(sequence.data.timestamp_start.seconds, ' ', new Date());
+        const timeData = sequence.data.timestamp_start.seconds * 1000;
+        const timeFilterStart = dataFilter.time.start.getTime();
+        const timeFilterEnd = dataFilter.time.end.getTime();
 
         return (
           dataFilter.STATUS.includes(sequence.data.status) &&
           dataFilter.SOURCE.includes(sequence.data.source) &&
           dataFilter.SERVICE.includes(sequence.data.service_name) &&
-          getTimeFilter >= getTimeData
+          timeFilterStart <= timeData && timeFilterEnd >= timeData
         );
       }),
     );
@@ -107,8 +146,18 @@ const ReportList = () => {
     handleFetchData();
   }, []);
 
+  useEffect(() => {
+    setSearchTerm(data);
+  }, [data]);
+
   return (
-    <>
+    <><div
+    onClick={() => {
+      add();
+    }}
+    >
+    X
+    </div>
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
         <div className={cx('content')}>
@@ -186,48 +235,6 @@ const ReportList = () => {
                 <tr>
                   <th className="">
                     Số thứ tự
-                    {/* <Select
-                      sx={[
-                        {
-                          '&': {
-                            width: '100%',
-                            backgroundColor: 'transparent',
-                          },
-                        },
-                        {
-                          '& .MuiSelect-select': {
-                            color: '#FFF',
-                            fontWeight: '700',
-                          },
-                        },
-                        {
-                          '& .MuiSvgIcon-root': {
-                            color: '#FFF',
-                          },
-                        },
-                        {
-                          '& fieldset': { border: '0' },
-                        },
-                      ]}
-                      onChange={(event: SelectChangeEvent) => {
-                        handleFilterData(event);
-                      }}
-                      defaultValue="0"
-                      value="0"
-                      name="SERIAL"
-                    >
-                      <MenuItem className="d-none" value={0} disabled>
-                        Số thứ tự
-                      </MenuItem>
-                      <MenuItem value="all">Tất cả</MenuItem>
-                      {MENU.SERIAL.map((title: string, index: number) => {
-                        return (
-                          <MenuItem key={index} value={title}>
-                            {title}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select> */}
                   </th>
                   <th className="p-0">
                     <Select
@@ -260,13 +267,9 @@ const ReportList = () => {
                         {},
                       ]}
                       value={serviceList}
-                      // renderValue={(selected: any) => selected.join(',')}
+                    
                       multiple
                       onChange={(event: SelectChangeEvent<string[]>) => {
-                        // handleFilterData(event);
-                        //
-
-                        console.log(event.target.value[0]);
                         setDataFilter((prev) => {
                           if (
                             event.target.value[0] === 'all' &&
@@ -428,12 +431,12 @@ const ReportList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((sequence, index) => {
+                {currentPageData?.map((sequence, index) => {
                   return (
                     <tr key={sequence.id}>
                       <td>
                         <span>
-                          {sequence.data.stt}
+                          20100{sequence.data.stt}
                           {index}
                         </span>
                       </td>
@@ -454,7 +457,22 @@ const ReportList = () => {
                         </span>
                       </td>
                       <td>
-                        <span>{sequence.data.status}</span>
+                        <p className={cx('status')}>
+                          <span className={cx('circle-icon')}>
+                            <CircleIcon
+                              color={
+                                sequence.data.status === 'Đang chờ'
+                                  ? 'info'
+                                  : sequence.data.status === 'Đã sử dụng'
+                                  ? undefined
+                                  : sequence.data.status === 'Bỏ qua'
+                                  ? 'error'
+                                  : undefined
+                              }
+                            />
+                          </span>
+                          <span>{sequence.data.status}</span>
+                        </p>
                       </td>
                       <td>
                         <span>{sequence.data.source}</span>
@@ -483,7 +501,7 @@ const ReportList = () => {
             </table>
 
             <div className={cx('service-btn-container')}>
-              <button className={cx('')}>
+              <button onClick={handleConvertDataExcel}>
                 <span>
                   <AddBoxIcon />
                 </span>
@@ -491,6 +509,18 @@ const ReportList = () => {
               </button>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+          />
         </div>
       </div>
     </>

@@ -22,11 +22,6 @@ interface ButtonMenuProps {
 
 const Sidebar = () => {
   const location = useLocation();
-  const [isActive, setIsActive] = useState<number | null>(null);
-  console.log(location.pathname);
-  const handleClick = (id: number): void => {
-    setIsActive(id);
-  };
 
   const subTitle = [
     { title: 'Quản lý vai trò', to: '/role-list' },
@@ -89,14 +84,8 @@ const Sidebar = () => {
             return (
               <Button
                 to={value.to}
-                onClick={() => handleClick(index)}
                 startIcon={<MoreTimeIcon />}
                 endIcon={value.endIcon}
-                // className={cx('button_menu', { active:  })}
-
-                //   subTitle.some((item) =>
-                //   location.pathname.includes(item.title),
-                // ),
                 className={cx(
                   'button_menu',
                   {

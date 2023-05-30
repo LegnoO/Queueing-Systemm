@@ -2,7 +2,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './Search.module.scss';
 import classNames from 'classnames/bind';
-import Input from "../Input"
+import Input from '../Input';
 const cx = classNames.bind(styles);
 
 interface SearchProps {
@@ -10,6 +10,7 @@ interface SearchProps {
   icon?: React.ReactNode;
   disabled?: string;
   className?: string;
+  placeholder?: string;
 }
 
 const Search: React.FC<SearchProps> = ({
@@ -17,15 +18,19 @@ const Search: React.FC<SearchProps> = ({
   icon,
   disabled,
   className,
+  placeholder,
 }) => {
   return (
     <div className={cx('wrapper')}>
       <Input
+        placeholder={placeholder || undefined}
         className={className}
         // icon={icon || undefined}
         onChange={onChange || undefined}
       />
-      <span><SearchIcon/></span>
+      <span>
+        <SearchIcon />
+      </span>
     </div>
   );
 };

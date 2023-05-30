@@ -6,60 +6,50 @@ import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useNavigate } from 'react-router-dom';
 import { pathType } from '~/types/Header';
+import NotifyDropdown from '~/components/NotifyDropdown';
 const cx = classNames.bind(styles);
 
 interface HeaderProps {
   path?: pathType[];
+  openDrop?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ path }) => {
-
-
+const Header: React.FC<HeaderProps> = ({ path, openDrop }) => {
   return (
-    <div className={cx('wrapper')}>
-      <div className={cx('left')}>
-        <div className={cx('content-breadcrumbs')}>
-          {path?.map((value: pathType, index: number) => {
-            return (
-              <Fragment key={index}>
-                <Button
-                  to={value.to}
-                  className={cx('title', { 'link-button': value.to })}
-                >
-                  {value.text}
-                </Button>
-                {index + 1 < path?.length ? (
-                  <span key={index} className={cx('arrow')}>
-                    <NavigateNextIcon fontSize="small" />
-                  </span>
-                ) : (
-                  <></>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-      </div>
-      <div className={cx('right')}>
-        <div className={cx('inner')}>
-          <div className={cx('notify-icon')}>
-            <NotificationsIcon />
+    <>
+      <div className={cx('wrapper')}>
+        <div className={cx('left')}>
+          <div className={cx('content-breadcrumbs')}>
+            {path?.map((value: pathType, index: number) => {
+              return (
+                <Fragment key={index}>
+                  <Button
+                    to={value.to}
+                    className={cx('title', { 'link-button': value.to })}
+                  >
+                    {value.text}
+                  </Button>
+                  {index + 1 < path?.length ? (
+                    <span key={index} className={cx('arrow')}>
+                      <NavigateNextIcon fontSize="small" />
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </Fragment>
+              );
+            })}
           </div>
-          <div className={cx('user')}>
-            <img
-              className={cx('avatar')}
-              alt=""
-              src="https://scontent.fsgn6-1.fna.fbcdn.net/v/t1.6435-9/97422931_1091843461182849_8761038478390591488_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=174925&_nc_ohc=Ya8zN8H3lNoAX-OWjGI&_nc_ht=scontent.fsgn6-1.fna&oh=00_AfBtarzsjs8fxnbvtiWUWBO44vhzzGm8jotOuProiMcmfg&oe=648A1E8D"
-            />
-            <div className={cx('info')}>
-              <p>Xin chào</p>
-              <h2>Ngô Minh Khôi</h2>
-            </div>
+        </div>
+        <div className={cx('right')}>
+          <div className={cx('inner')}>
+            <NotifyDropdown openDrop={openDrop} />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

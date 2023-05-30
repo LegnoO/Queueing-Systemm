@@ -16,7 +16,7 @@
         font-size: 20px;
         font-weight: 700;
         cursor: default;
-        color: #FF7506;
+        color: #ff7506;
 
         &.link-button {
           &:hover {
@@ -36,7 +36,6 @@
           color: #ff7506;
         }
 
-
         &:hover {
           background-color: transparent;
         }
@@ -52,39 +51,6 @@
 
   .right {
     .inner {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-
-      .notify-icon {
-        display: flex;
-        color: #ffac6a;
-        font-size: 24px;
-        padding: 5px;
-        border-radius: 48px;
-        background-color: #fff2e7;
-      }
-
-      .user {
-        display: flex;
-        gap: 8px;
-
-        .avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 48px;
-        }
-
-        .info {
-          p {
-            font-size: 12px;
-          }
-
-          h2 {
-            font-size: 16px;
-          }
-        }
-      }
     }
   }
 }

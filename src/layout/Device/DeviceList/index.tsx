@@ -14,7 +14,7 @@ import { fetchDeviceList } from '~/features/deviceSlice';
 import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
 import { truncateString } from '~/util/truncateString';
-import DeviceDetail from '../DeviceDetail/index';
+import ReactPaginate from 'react-paginate';
 const cx = classNames.bind(styles);
 
 interface DeviceFilter {
@@ -26,14 +26,25 @@ const DeviceList = () => {
   // const handleChange = (event: SelectChangeEvent) => {
   //   setAge(event.target.value as string);
   // };
+  const [data, setData] = useState<DeviceListType[]>([]);
+
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<DeviceListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(pagesVisited, pagesVisited + dataPerPage);
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
 
   const [dataFilter, setDataFilter] = useState<DeviceFilter>({
     MENU_ACTIVE: ['Hoạt động', 'Ngưng hoạt động'],
     MENU_CONNECT: ['Kết nối', 'Mất kết nối'],
     SEARCH_TERM: '',
   });
-  
-  const [data, setData] = useState<DeviceListType[]>([]);
+
   const [expand, setExpand] = useState<boolean>(false);
   const [checkID, setCheckID] = useState<string>('');
 
@@ -49,8 +60,6 @@ const DeviceList = () => {
   const MENU_CONNECT = ['Tất cả', 'Kết nối', 'Mất kết nối'];
   const deviceData = useAppSelector((state) => state.device.data);
 
-  // const result = await fetchDevice()
-  // dispatch(fetchDeviceSuccess(result));
   const handleFetchData = (): void => {
     dispatch(fetchDeviceList());
   };
@@ -81,37 +90,33 @@ const DeviceList = () => {
     setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
   };
 
-
   useEffect(() => {
     setData(
       deviceData.filter((device: DeviceListType) => {
         return (
           dataFilter.MENU_CONNECT.includes(device.data.connect_status) &&
-          dataFilter.MENU_ACTIVE.includes(device.data.active_status)
+          dataFilter.MENU_ACTIVE.includes(device?.data?.active_status) &&
+          device?.data?.device_id?.includes(dataFilter.SEARCH_TERM)
         );
       }),
     );
   }, [deviceData, dataFilter]);
 
   const handleMoveToDetail = (id: string): void => {
-    const deviceDetail = deviceData.filter(
-      (device: DeviceListType) => device.id === id,
-    );
-
-    navigate('/device-detail', { state: { device: deviceDetail } });
+    navigate(`/device-detail/${id}`);
   };
 
   const handleMoveToUpdate = (id: string): void => {
-    const deviceDetail = deviceData.filter(
-      (device: DeviceListType) => device.id === id,
-    );
-
-    navigate('/device-update', { state: { device: deviceDetail } });
+    navigate(`/device-update/${id}`);
   };
- 
+
   useEffect(() => {
     handleFetchData();
   }, []);
+
+  useEffect(() => {
+    setSearchTerm(data);
+  }, [data]);
   return (
     <>
       <Header path={CONTENT_TITLES} />
@@ -241,7 +246,7 @@ const DeviceList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((device) => {
+                {currentPageData?.map((device) => {
                   return (
                     <tr key={device.id}>
                       <td>
@@ -334,6 +339,20 @@ const DeviceList = () => {
               </Link>
             </div>
           </div>
+
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+            // subContainerClassName="pages pagination"
+          />
         </div>
       </div>
     </>

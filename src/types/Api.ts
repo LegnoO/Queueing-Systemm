@@ -14,27 +14,9 @@ export interface DeviceListType {
   id: string;
 }
 
-
-export interface ServiceListType {
-  data: {
-    active_status: string,
-    describe: string,
-    service_id: string,
-    service_name: string,
-    serial: string,
-    status: string,
-    auto_increase: boolean,
-    prefix: boolean,
-    surfix: boolean,
-    reset: boolean,
-  }
-  id: string;
-
-}
-
-
 export interface Service {
-  active_status?: string,
+  status: string
+  active_status: string,
   serial?: string,
   service_id: string,
   describe: string,
@@ -44,6 +26,17 @@ export interface Service {
   surfix: boolean,
   reset: boolean,
 }
+
+
+export interface ServiceListType {
+  data: Service
+  id: string;
+
+}
+
+
+
+
 interface Timestamp {
   seconds: number;
   nanoseconds: number;
@@ -55,8 +48,8 @@ export interface Sequence {
   stt: string,
   customer_name: string,
   service_name: string,
-  timestamp_end: Timestamp
-  timestamp_start: Timestamp
+  timestamp_end: Timestamp,
+  timestamp_start: Timestamp,
   status: string,
   source: string,
   email: string,
@@ -98,5 +91,19 @@ export interface Account {
 
 export interface AccountListType {
   data: Account,
+  id: string
+}
+
+
+export interface Activity {
+  username: string,
+  logged_time: Timestamp
+  ip: string
+  logged: string
+}
+
+
+export interface ActivityListType {
+  data: Activity,
   id: string
 }

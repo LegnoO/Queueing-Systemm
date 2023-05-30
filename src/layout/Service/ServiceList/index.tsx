@@ -14,6 +14,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import dayjs from 'dayjs';
 import Header from '~/layout/Header';
+import ReactPaginate from 'react-paginate';
 const cx = classNames.bind(styles);
 
 interface ServiceFilter {
@@ -27,6 +28,18 @@ const ServiceList = () => {
     { text: 'Danh sách dịch vụ' },
   ];
   const [data, setData] = useState<ServiceListType[]>([]);
+
+  // Pagination
+  const [searchTerm, setSearchTerm] = useState<ServiceListType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const dataPerPage = 5;
+  const pagesVisited = currentPage * dataPerPage;
+  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
+  const currentPageData = data?.slice(pagesVisited, pagesVisited + dataPerPage);
+  const handleChangePage = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected);
+  };
+
   const [dataFilter, setDataFilter] = useState<ServiceFilter>({
     MENU_ACTIVE: ['Hoạt động', 'Ngưng hoạt động'],
     SEARCH_TERM: '',
@@ -38,19 +51,11 @@ const ServiceList = () => {
   const serviceData = useAppSelector((state) => state.service.data);
 
   const handleMoveToDetail = (id: string): void => {
-    const serviceDetail = serviceData.filter(
-      (service: ServiceListType) => service.id === id,
-    );
-
-    navigate('/service-detail', { state: { service: serviceDetail } });
+    navigate(`/service-detail/${id}`);
   };
 
   const handleMoveToUpdate = (id: string): void => {
-    const serviceDetail = serviceData.filter(
-      (service: ServiceListType) => service.id === id,
-    );
-
-    navigate('/service-update', { state: { service: serviceDetail } });
+    navigate(`/service-update/${id}`);
   };
 
   const handleFilterData = (event: SelectChangeEvent) => {
@@ -79,7 +84,7 @@ const ServiceList = () => {
       serviceData.filter((service: ServiceListType) => {
         return (
           dataFilter.MENU_ACTIVE.includes(service.data.active_status) &&
-          service.data.serial.includes(dataFilter.SEARCH_TERM)
+          service?.data?.service_id?.includes(dataFilter.SEARCH_TERM)
         );
       }),
     );
@@ -90,13 +95,17 @@ const ServiceList = () => {
   };
 
   useEffect(() => {
-    console.log('re render');
     handleFetchData();
   }, []);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDataFilter((prev) => ({ ...prev, SEARCH_TERM: event.target.value }));
   };
+
+  useEffect(() => {
+    setSearchTerm(data);
+  }, [data]);
+
   return (
     <>
       <Header path={CONTENT_TITLES} />
@@ -229,7 +238,7 @@ const ServiceList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((service) => {
+                {currentPageData?.map((service) => {
                   return (
                     <tr key={service.id}>
                       <td>
@@ -295,6 +304,18 @@ const ServiceList = () => {
               </Link>
             </div>
           </div>
+          <ReactPaginate
+            previousLabel={'◄'}
+            nextLabel={'►'}
+            breakLabel={'...'}
+            pageCount={pageCount}
+            onPageChange={handleChangePage}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            forcePage={currentPage}
+            containerClassName="pagination"
+            activeClassName="page-active"
+          />
         </div>
       </div>
     </>

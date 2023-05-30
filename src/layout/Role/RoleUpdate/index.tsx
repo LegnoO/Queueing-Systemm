@@ -3,35 +3,54 @@ import classNames from 'classnames/bind';
 import { pathType } from '~/types/Header';
 import { useState } from 'react';
 import { Checkbox } from '@mui/material';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { RoleListType, Role } from '~/types/Api';
 import { updateRole } from '~/services/api';
 import { useAppDispatch } from '~/app/store';
 import Button from '~/components/Button';
 import Header from '~/layout/Header';
-const cx = classNames.bind(styles);
 
+import { RouteParams } from '~/types/Route';
+import { fetchDataById } from '~/services/api';
+import { useEffect } from 'react';
+const cx = classNames.bind(styles);
 
 const RoleUpdate = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const dispatch = useAppDispatch();
-  
-  const roleData = location.state.role[0];
-
+  const { id } = useParams<RouteParams>() as { id: string };
   const CONTENT_TITLES: pathType[] = [
     { text: 'Cài đặt hệ thống' },
     { text: 'Quản lý vai trò', to: '/role-list' },
     { text: 'Cập nhật vai trò' },
   ];
-  const [formData, setFormData] = useState<Role>(roleData.data);
-  console.log(formData);
+
+  const [roleData, setRoleData] = useState<RoleListType | undefined>();
+
+  const [formData, setFormData] = useState<Role>({
+    role_name: '',
+    member: 0,
+    describe: '',
+    feature_a: [],
+    feature_b: [],
+  });
+
   const FEATURE_MENU = ['Chức năng X', 'Chức năng Y', 'Chức năng Z'];
-  
-  const handleUpdateData = ():void=>{
-    updateRole(roleData.id,formData)
-    navigate("/role-list")
+
+  const handleUpdateData = (id: string | undefined): void => {
+    if (id) {
+      updateRole(id, formData);
+      navigate('/role-list');
+    }
   };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('role-list', id);
+      setRoleData(result);
+      setFormData(result.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -58,13 +77,12 @@ const RoleUpdate = () => {
                   placeholder="Nhập tên vai trò"
                   defaultValue={formData.role_name}
                 />
-              
+
                 <label htmlFor="">Mô tả</label>
                 <textarea
                   className={cx('input-area', 'w-100')}
                   placeholder="Nhập mô tả"
                   defaultValue={formData.describe}
-               
                 />
               </div>
               <div
@@ -98,8 +116,7 @@ const RoleUpdate = () => {
                             className="p-0"
                             name="feature_a"
                             checked={
-                              formData.feature_a.length ===
-                              FEATURE_MENU.length
+                              formData.feature_a.length === FEATURE_MENU.length
                             }
                             onChange={() => {
                               setFormData((prev) => ({
@@ -168,8 +185,7 @@ const RoleUpdate = () => {
                             className="p-0"
                             name="feature_b"
                             checked={
-                              formData.feature_b.length ===
-                              FEATURE_MENU.length
+                              formData.feature_b.length === FEATURE_MENU.length
                             }
                             onChange={() => {
                               setFormData((prev) => ({
@@ -234,8 +250,9 @@ const RoleUpdate = () => {
           Hủy bỏ
         </Button>
         <Button
-          onClick={() => {handleUpdateData()}}
-
+          onClick={() => {
+            handleUpdateData(roleData?.id);
+          }}
           className={cx('action-button__primary')}
         >
           Cập nhật

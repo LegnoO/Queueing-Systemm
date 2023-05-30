@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './DeviceUpdate.module.scss';
-import { Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from 'classnames/bind';
 import { updateDevice } from '~/services/api';
@@ -11,25 +11,56 @@ import Button from '~/components/Button';
 import { splitString } from '~/util/splitString';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
 import Header from '~/layout/Header';
+import { DeviceListType } from '~/types/Api';
+import { RouteParams } from '~/types/Route';
+import { fetchDataById } from '~/services/api';
 import { pathType } from '~/types/Header';
 
 const cx = classNames.bind(styles);
 
 const DeviceUpdate = () => {
-  const location = useLocation();
-  const deviceData = location.state.device[0];
-  console.log(deviceData.data);
-  const [service, setService] = useState<string[]>(
-    splitString(deviceData.data.service_usage, ','),
-  );
+  const { id } = useParams<RouteParams>() as { id: string };
+  const [deviceData, setDeviceData] = useState<DeviceListType | undefined>();
+
+  const [formData, setFormData] = useState<Device>({
+    service_usage: '',
+    active_status: '',
+    device_name: '',
+    ip: '',
+    connect_status: '',
+    device_id: '',
+    device_type: '',
+    username: '',
+    password: '',
+  });
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('device-list', id);
+      setDeviceData(result);
+      setFormData(result.data);
+    };
+    fetchData();
+  }, []);
+
+  // const [service, setService] = useState<string[]>(
+  //   splitString(deviceData?.data?.service_usage ?? '', ','),
+  // );
 
   const handleRemoveService = (index: number): void => {
-    const newData = service.filter((_item, indexItem) => indexItem !== index);
-    setService(newData);
-    setFormData((prev) => ({ ...prev, service_usage: newData.join(',') }));
+    const newData = formData?.service_usage
+      .split(',')
+      .filter((_item, indexItem) => indexItem !== index);
+    const updatedData = newData.join(',');
+
+    setFormData((prev) => ({ ...prev, service_usage: updatedData }));
   };
 
-  const [formData, setFormData] = useState<Device>(deviceData.data);
+  const handleUpdateDevice = (id: string | undefined, data: Device): void => {
+    if (id) {
+      updateDevice(id, data);
+    }
+  };
 
   const CONTENT_TITLES: pathType[] = [
     { text: 'Thiết bị' },
@@ -46,12 +77,14 @@ const DeviceUpdate = () => {
 
   const handleSelectChange = (event: SelectChangeEvent): void => {
     const { value, name } = event.target;
+    console.log(value, name);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+  console.log(formData);
   return (
     <>
       <Header path={CONTENT_TITLES} />
+
       <div className={cx('wrapper')}>
         <h3 className={cx('header-title')}>Thông tin thiết bị</h3>
 
@@ -66,7 +99,7 @@ const DeviceUpdate = () => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   }}
-                  defaultValue={deviceData.data.device_id}
+                  defaultValue={deviceData?.data.device_id}
                   name="device_id"
                   type="text"
                   placeholder="Nhập mã thiết bị"
@@ -78,7 +111,7 @@ const DeviceUpdate = () => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   }}
-                  defaultValue={deviceData.data.device_name}
+                  defaultValue={deviceData?.data.device_name}
                   type="text"
                   name="device_name"
                   placeholder="Nhập tên thiết bị"
@@ -90,7 +123,7 @@ const DeviceUpdate = () => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   }}
-                  defaultValue={deviceData.data.ip}
+                  defaultValue={deviceData?.data.ip}
                   type="text"
                   name="ip"
                   placeholder="Nhập địa chỉ IP"
@@ -137,8 +170,9 @@ const DeviceUpdate = () => {
                       },
                     },
                   ]}
-                  defaultValue={deviceData.data.device_type}
-                  //defaultValue="0"
+                  defaultValue={deviceData?.data.device_type}
+                  // value={formData.device_type}
+                  value={formData.device_type}
                   name="device_type"
                 >
                   <MenuItem style={{ display: 'none' }} value="0">
@@ -148,25 +182,27 @@ const DeviceUpdate = () => {
                   <MenuItem value="Display counter">Display counter</MenuItem>
                 </Select>
                 <label htmlFor="">
-                  Tên đăng nhập<span className={cx('warning-require')}>*</span>
+                  Tên đăng nhập
+                  <span className={cx('warning-require')}>*</span>
                 </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   }}
-                  defaultValue={deviceData.data.username}
+                  defaultValue={deviceData?.data.username}
                   type="text"
                   name="username"
                   placeholder="Nhập tài khoản"
                 />
                 <label htmlFor="">
-                  Nhập mật khẩu<span className={cx('warning-require')}>*</span>
+                  Nhập mật khẩu
+                  <span className={cx('warning-require')}>*</span>
                 </label>
                 <input
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   }}
-                  defaultValue={deviceData.data.password}
+                  defaultValue={deviceData?.data.password}
                   type="text"
                   name="password"
                   placeholder="Nhập mật khẩu"
@@ -175,29 +211,35 @@ const DeviceUpdate = () => {
             </div>
             <div className={cx('device-info__bottom', 'form-field')}>
               <label htmlFor="">
-                Dịch vụ sử dụng<span className={cx('warning-require')}>*</span>
+                Dịch vụ sử dụng
+                <span className={cx('warning-require')}>*</span>
               </label>
               <div>
                 <div className={cx('service__usage-container')}>
-                  {service.map((device: string, index: number) => {
-                    return (
-                      <div key={index}>
-                        <Button
-                          onClick={() => {
-                            handleRemoveService(index);
-                          }}
-                          endIcon={<CloseIcon />}
-                          className={cx('service__usage-item')}
-                        >
-                          {device}
-                        </Button>
-                      </div>
-                    );
-                  })}
+                  {formData?.service_usage
+                    .split(',')
+                    .map((device: string, index: number) => {
+                      return (
+                        <div key={index}>
+                          <Button
+                            onClick={() => {
+                              handleRemoveService(index);
+                            }}
+                            endIcon={<CloseIcon />}
+                            className={cx('service__usage-item')}
+                          >
+                            {device}
+                          </Button>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </div>
-            <div className="mt-3 w-100 text-muted"><span className={cx("warning-require")}>*</span>Là trường thông tin bắt buộc</div>
+            <div className="mt-3 w-100 text-muted">
+              <span className={cx('warning-require')}>*</span>Là trường thông
+              tin bắt buộc
+            </div>
           </div>
         </div>
 
@@ -207,7 +249,8 @@ const DeviceUpdate = () => {
           </Button>
           <Button
             onClick={() => {
-              updateDevice(deviceData.id, formData);
+              // updateDevice();
+              handleUpdateDevice(deviceData?.id, formData);
             }}
             to="/device-list"
             className={cx('action-button__primary')}

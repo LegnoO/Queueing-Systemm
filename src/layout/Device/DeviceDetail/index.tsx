@@ -1,26 +1,39 @@
 /** @format */
-
+import { useState, useEffect } from 'react';
 import styles from './DeviceDetail.module.scss';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import classNames from 'classnames/bind';
 import Header from '~/layout/Header';
+import { fetchDataById } from '~/services/api';
+import { DeviceListType } from '~/types/Api';
 import { pathType } from '~/types/Header';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { RouteParams } from '~/types/Route';
+import { useNavigate, useParams } from 'react-router-dom';
+
 const cx = classNames.bind(styles);
 
 const DeviceDetail = () => {
   const navigate = useNavigate();
+  const { id } = useParams<RouteParams>() as { id: string };
+
+  const [deviceData, setDeviceData] = useState<DeviceListType | undefined>();
+  console.log(deviceData);
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const result = await fetchDataById('device-list', id);
+      setDeviceData(result);
+    };
+    fetchData();
+  }, []);
+
   const CONTENT_TITLES: pathType[] = [
     { text: 'Thiết bị' },
     { text: 'Danh sách thiết bị', to: '/device-list' },
     { text: 'Chi tiết thiết bị' },
   ];
-  const location = useLocation();
-  const deviceData = location.state.device[0];
-  console.log(deviceData.data);
 
   const handleMoveToUpdate = (): void => {
-    navigate('/device-update', { state: { device: [deviceData] } });
+    navigate(`/device-update/${id}`);
   };
 
   return (
@@ -35,35 +48,35 @@ const DeviceDetail = () => {
               <div>
                 <div>
                   <span>Mã thiết bị</span>
-                  <span>{deviceData.data.device_id}</span>
+                  <span>{deviceData?.data.device_id}</span>
                 </div>
                 <div>
                   <span>Tên thiết bị</span>
-                  <span>{deviceData.data.device_name}</span>
+                  <span>{deviceData?.data.device_name}</span>
                 </div>
                 <div>
                   <span>Địa chỉ IP</span>
-                  <span>{deviceData.data.ip}</span>
+                  <span>{deviceData?.data.ip}</span>
                 </div>
               </div>
               <div>
                 <div>
                   <span>Loại thiết bị</span>
-                  <span>{deviceData.data.device_type}</span>
+                  <span>{deviceData?.data.device_type}</span>
                 </div>
                 <div>
                   <span>Tên đăng nhập:</span>
-                  <span>{deviceData.data.username}</span>
+                  <span>{deviceData?.data.username}</span>
                 </div>
                 <div>
                   <span>Mật khẩu</span>
-                  <span>{deviceData.data.password}</span>
+                  <span>{deviceData?.data.password}</span>
                 </div>
               </div>
             </div>
             <div className={cx('device-info-bottom')}>
               <h4>Dịch vụ sử dụng:</h4>
-              <p>{deviceData.data.service_usage}</p>
+              <p>{deviceData?.data.service_usage}</p>
             </div>
           </div>
 
