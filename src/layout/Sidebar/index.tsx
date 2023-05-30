@@ -3,11 +3,13 @@
 import { images } from '~/assets/images';
 import styles from './Sidebar.module.scss';
 import Button from '~/components/Button';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
+import { cleanData } from '~/features/accountSlice';
+import { useAppDispatch } from '~/app/store';
 import { Subtitles } from '@mui/icons-material';
 
 const cx = classNames.bind(styles);
@@ -21,7 +23,9 @@ interface ButtonMenuProps {
 }
 
 const Sidebar = () => {
+  const dispatch = useAppDispatch()
   const location = useLocation();
+
 
   const subTitle = [
     { title: 'Quản lý vai trò', to: '/role-list' },
@@ -106,7 +110,7 @@ const Sidebar = () => {
           })}
         </div>
         <div className={cx('bottom')}>
-          <Button startIcon={<MoreTimeIcon />} className={cx('button_logout')}>
+          <Button to="/login" startIcon={<MoreTimeIcon />} className={cx('button_logout')}>
             Đăng xuất
           </Button>
         </div>

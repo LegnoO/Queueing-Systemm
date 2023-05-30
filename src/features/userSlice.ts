@@ -1,48 +1,44 @@
 /** @format */
-import { AccountListType } from "../types/Api";
-import { fetchAccount } from "../services/api"
+import { UserListType } from "../types/Api";
+import { fetchUser } from "../services/api"
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchAccountList = createAsyncThunk(
-  "firebase/fetchAccount",
-  fetchAccount
+export const fetchUserList = createAsyncThunk(
+  "firebase/fetchUser",
+  fetchUser
 );
 
-interface AccountState {
-  data: AccountListType[];
+interface UserState {
+  data: UserListType[];
   status: "idle" | "pending" | "succeeded" | "failed";
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: AccountState = {
+const initialState: UserState = {
   data: [],
   status: "idle",
   isLoading: false,
   error: null,
 };
 
-const accountSlice = createSlice({
-  name: "account",
+const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
-    cleanData(state) {
-      Object.assign(state, {
-        data: [],
-      });
-    },
+
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAccountList.pending, (state) => {
+      .addCase(fetchUserList.pending, (state) => {
         Object.assign(state, {
           isLoading: true,
           status: "pending",
         });
       })
       .addCase(
-        fetchAccountList.fulfilled,
-        (state, action: PayloadAction<AccountListType[]>) => {
+        fetchUserList.fulfilled,
+        (state, action: PayloadAction<UserListType[]>) => {
           Object.assign(state, {
             isLoading: false,
             status: "succeeded",
@@ -50,7 +46,7 @@ const accountSlice = createSlice({
           });
         }
       )
-      .addCase(fetchAccountList.rejected, (state, action: any) => {
+      .addCase(fetchUserList.rejected, (state, action: any) => {
         Object.assign(state, {
           isLoading: false,
           status: "failed",
@@ -60,5 +56,4 @@ const accountSlice = createSlice({
   },
 });
 
-export const { cleanData } = accountSlice.actions;
-export default accountSlice.reducer;
+export default userSlice.reducer;

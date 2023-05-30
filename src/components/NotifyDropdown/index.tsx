@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import styles from './NotifyDropdown.module.scss';
 import classNames from 'classnames/bind';
+import { useAppSelector, useAppDispatch } from '~/app/store';
+import { fetchActivityList } from '~/features/activitySlice';
+import { formatTimeStampToTime, formatTimeStampToDate } from '~/util/date';
+import { ActivityListType } from '~/types/Api';
+import { Activity } from '../../types/Api';
 const cx = classNames.bind(styles);
 
 type NotifyProps = {
@@ -13,11 +18,20 @@ const NotifyDropdown: React.FC<NotifyProps> = ({
   className,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(openDrop);
+  const dispatch = useAppDispatch();
+  const activityData = useAppSelector((state) => state.activity.data);
+
+  const handleFetchData = (): void => {
+    dispatch(fetchActivityList());
+  };
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      console.log(target);
       if (!target.closest('.notify-dropdown')) {
         setIsOpen(false);
       }
@@ -91,20 +105,30 @@ const NotifyDropdown: React.FC<NotifyProps> = ({
           Thông báo
         </div>
         <ul className={cx('content', 'p-3')}>
-          <li style={{ color: '#BF5805' }} className="mb-3">
-            <h4>Người dùng: </h4>
-            <p className="text-muted">
-              Thời gian nhận lần cuối: <span>0</span> ngày <span>0</span>
-            </p>
-            <div className="border my-2"></div>
-          </li>
-          <li>
-            <h4>Người dùng: </h4>
-            <p>
-              Thời gian nhận lần cuối: <span>0</span> ngày <span>0</span>
-            </p>
-            <div className="border my-2"></div>
-          </li>
+          {activityData.map((content, index) => {
+            return (
+              <li key={index} style={{ color: '#BF5805' }} className="mb-3">
+                <h4>Người dùng: {content.data.username}</h4>
+                <p className="text-muted">
+                  Thời gian nhận lần cuối:{' '}
+                  <span>
+                    {formatTimeStampToTime(
+                      content.data.logged_time.seconds,
+                      'HH:mm',
+                    )}
+                  </span>{' '}
+                  ngày{' '}
+                  <span>
+                    {formatTimeStampToDate(
+                      content.data.logged_time.seconds,
+                      'DD-MM-YYYY',
+                    )}
+                  </span>
+                </p>
+                <div className="border my-2"></div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

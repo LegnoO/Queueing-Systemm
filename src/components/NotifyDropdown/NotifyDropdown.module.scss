@@ -23,14 +23,15 @@
     }
   }
   .dropdown {
-    width: 320px;
+    height: 350px;
+    width: 400px;
     top: 0;
     position: absolute;
     // left: 0;
     z-index: 5;
     border-radius: 16px;
-    transform: translate(-25%, 15%);
-
+    transform: translate(-35%, 15%);
+    overflow: hidden;
     &.close {
       display: none;
     }
@@ -44,10 +45,11 @@
       background-color: #ffac6a;
     }
     .content {
+      overflow-y: scroll;
+      height: 100%;
       border-bottom-right-radius: 8px;
       border-bottom-left-radius: 8px;
       background-color: #fff;
-      height: 300px;
     }
   }
 }

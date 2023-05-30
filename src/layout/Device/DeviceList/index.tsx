@@ -93,6 +93,7 @@ const DeviceList = () => {
   useEffect(() => {
     setData(
       deviceData.filter((device: DeviceListType) => {
+        console.log(device.data.device_id, ' ', dataFilter.SEARCH_TERM);
         return (
           dataFilter.MENU_CONNECT.includes(device.data.connect_status) &&
           dataFilter.MENU_ACTIVE.includes(device?.data?.active_status) &&
@@ -250,7 +251,7 @@ const DeviceList = () => {
                   return (
                     <tr key={device.id}>
                       <td>
-                        <span>{device.data.device_name}</span>
+                        <span>{device.data.device_id}</span>
                       </td>
                       <td>
                         <span>{device.data.device_name}</span>

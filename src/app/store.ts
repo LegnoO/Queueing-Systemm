@@ -10,6 +10,8 @@ import sequenceSlice from "../features/sequenceSlice"
 import roleSlice from "../features/roleSlice"
 import accountSlice from "../features/accountSlice"
 import activitySlice from "../features/activitySlice"
+import userSlice from "../features/userSlice"
+
 import thunkMiddleware from "redux-thunk";
 
 const rootReducer = combineReducers({
@@ -18,12 +20,13 @@ const rootReducer = combineReducers({
   sequence: sequenceSlice,
   role: roleSlice,
   account: accountSlice,
-  activity:activitySlice
+  activity: activitySlice,
+  user: userSlice,
 });
 
 const loggerMiddleware = createLogger();
-// loggerMiddleware
-const middleware = [thunkMiddleware];
+
+const middleware = [thunkMiddleware, loggerMiddleware];
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -26,6 +26,7 @@ const AccountList = () => {
   const dispatch = useAppDispatch();
   const accountData = useAppSelector((state) => state.account.data);
   const [data, setData] = useState<AccountListType[]>([]);
+
   // Pagination
   const [searchTerm, setSearchTerm] = useState<AccountListType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);

@@ -130,15 +130,18 @@ export const fetchActivity = async (): Promise<ActivityListType[]> => {
 
 
 export const fetchUser = async (): Promise<User[]> => {
-  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-    collection(db, "users")
-  );
-  const result = querySnapshot.docs.map((doc) => ({
-    data: doc.data() as User["data"],
-    id: doc.id,
-  }));
-
-  return result;
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      collection(db, "users")
+    );
+    const result: User[] = querySnapshot.docs.map((doc) => ({
+      data: doc.data() as User["data"],
+      id: doc.id,
+    }));
+    return result
+  } catch (error: any) {
+    return error
+  }
 };
 
 
@@ -167,8 +170,8 @@ export const add = async (): Promise<void> => {
         "Đang chờ",
       stt:
         "1",
-        timestamp_start:new Date(2022,1,1),
-        timestamp_end:new Date()
+      timestamp_start: new Date(2022, 1, 1),
+      timestamp_end: new Date()
     })
   } catch (error: any) {
     console.log(error)

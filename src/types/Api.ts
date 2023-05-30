@@ -107,3 +107,15 @@ export interface ActivityListType {
   data: Activity,
   id: string
 }
+
+
+export interface User {
+  email: string,
+  username: string,
+  password: string
+}
+
+export interface UserListType {
+  data: User,
+  id: string
+}

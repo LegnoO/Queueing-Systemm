@@ -3,6 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 import Sidebar from '~/layout/Sidebar';
 import styles from './DashBoard.module.scss';
+import { useNavigate } from 'react-router-dom';
 import NotifyDropdown from '~/components/NotifyDropdown';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
@@ -10,6 +11,16 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 function DashBoard() {
+  const navigate = useNavigate();
+
+  const navigateToSequence = (): void => {
+    navigate('/sequence-list');
+  };
+
+  const navigateToService = (): void => {
+    navigate('/service-list');
+  };
+
   const series = [
     {
       name: 'series1',
@@ -132,7 +143,7 @@ function DashBoard() {
                 Biểu đồ cấp số
               </h3>
               <div className="mb-3">
-                <div className="row gap-3">
+                <div onClick={navigateToSequence} className="row gap-3 cursor-pointer">
                   <div
                     className={cx(
                       'info-item',
@@ -430,7 +441,7 @@ function DashBoard() {
                 <h2 className="fs-4 mb-3" style={{ color: '#FF7506' }}>
                   Tổng quan
                 </h2>
-                <div className="row flex-column">
+                <div onClick={navigateToService} className="row flex-column cursor-pointer">
                   <div
                     style={{ boxShadow: ' 2px 2px 15px rgba(70, 64, 67, 0.1)' }}
                     className="d-flex w-100 bg-white rounded-2 gap-2 p-2 mb-3"
@@ -613,11 +624,11 @@ function DashBoard() {
                           <p>Ngưng hoạt động</p>
                         </div>
                         <div
-                          style={{ lineHeight: '2.3', color: '#FF7506' }}
+                          style={{ lineHeight: '2.3', color: '#4277FF' }}
                           className="ms-2 fs-small fw-bold"
                         >
                           <p>210</p>
-                          <p></p>
+                          <p>66</p>
                         </div>
                       </div>
                     </div>
