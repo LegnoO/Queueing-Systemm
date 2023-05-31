@@ -17,7 +17,7 @@ import classNames from 'classnames/bind';
 import CircleIcon from '@mui/icons-material/Circle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { add } from '~/services/api'; 
+
 import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
@@ -67,7 +67,7 @@ const ReportList = () => {
   };
   const [dataFilter, setDataFilter] = useState<DataProps>({
     time: {
-      start: new Date(2022,1,1),
+      start: new Date(2022, 1, 1),
       end: new Date(),
     },
     SERVICE: MENU.SERVICE,
@@ -136,7 +136,8 @@ const ReportList = () => {
           dataFilter.STATUS.includes(sequence.data.status) &&
           dataFilter.SOURCE.includes(sequence.data.source) &&
           dataFilter.SERVICE.includes(sequence.data.service_name) &&
-          timeFilterStart <= timeData && timeFilterEnd >= timeData
+          timeFilterStart <= timeData &&
+          timeFilterEnd >= timeData
         );
       }),
     );
@@ -151,13 +152,7 @@ const ReportList = () => {
   }, [data]);
 
   return (
-    <><div
-    onClick={() => {
-      add();
-    }}
-    >
-    X
-    </div>
+    <>
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
         <div className={cx('content')}>
@@ -233,9 +228,7 @@ const ReportList = () => {
             <table className={cx('list-table')}>
               <thead>
                 <tr>
-                  <th className="">
-                    Số thứ tự
-                  </th>
+                  <th className="">Số thứ tự</th>
                   <th className="p-0">
                     <Select
                       sx={[
@@ -267,7 +260,6 @@ const ReportList = () => {
                         {},
                       ]}
                       value={serviceList}
-                    
                       multiple
                       onChange={(event: SelectChangeEvent<string[]>) => {
                         setDataFilter((prev) => {

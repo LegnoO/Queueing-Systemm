@@ -85,14 +85,16 @@ const ServiceUpdate = () => {
               )}
             >
               <div className={cx('form-field', 'col-2')}>
-                <label>Mã dịch vụ</label>
+                <label>
+                  Mã dịch vụ<span className={cx('warning-require')}>*</span>
+                </label>
                 <Input
                   onChange={handleChangeData}
                   name="service_id"
                   className="w-100"
                   defaultValue={formData?.service_id}
                 />
-                <label>Tên dịch vụ</label>
+                <label>Tên dịch vụ<span className={cx('warning-require')}>*</span></label>
                 <Input
                   onChange={handleChangeData}
                   name="service_name"

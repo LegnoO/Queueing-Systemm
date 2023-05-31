@@ -153,35 +153,10 @@ export const addDevice = async (data: Device): Promise<void> => {
   }
 };
 
-export const add = async (): Promise<void> => {
-  try {
-    await addDoc(collection(db, "sequence-list"), {
-      customer_name:
-        "Nguyễn Thị Dung",
-      email:
-        "nguyendung@gmail.com",
-      phone:
-        "0948523623",
-      service_name:
-        "Khám tai mũi họng",
-      source:
-        "Kiosk",
-      status:
-        "Đang chờ",
-      stt:
-        "1",
-      timestamp_start: new Date(2022, 1, 1),
-      timestamp_end: new Date()
-    })
-  } catch (error: any) {
-    console.log(error)
-  }
-};
-
 export const addService = async (data: Service): Promise<void> => {
   try {
     await addDoc(collection(db, "service-list"), {
-      data,
+      ...data, active_status: "Hoạt động"
     }).then(response => console.log(response))
   } catch (error: any) {
     console.log(error)
@@ -269,7 +244,6 @@ export const updateAccount = (id: string, data: Account): void => {
     role: data.role,
     username: data.username,
     password: data.password,
-    confirm_password: data.confirm_password,
     status: data.active_status,
   })
 };

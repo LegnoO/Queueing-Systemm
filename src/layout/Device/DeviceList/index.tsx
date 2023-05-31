@@ -6,7 +6,6 @@ import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import classNames from 'classnames/bind';
-import { fetchDevice } from '~/services/api';
 import { DeviceListType } from '~/types/Api';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '~/app/store';
@@ -15,6 +14,7 @@ import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
 import { truncateString } from '~/util/truncateString';
 import ReactPaginate from 'react-paginate';
+
 const cx = classNames.bind(styles);
 
 interface DeviceFilter {
@@ -93,11 +93,10 @@ const DeviceList = () => {
   useEffect(() => {
     setData(
       deviceData.filter((device: DeviceListType) => {
-        console.log(device.data.device_id, ' ', dataFilter.SEARCH_TERM);
         return (
           dataFilter.MENU_CONNECT.includes(device.data.connect_status) &&
-          dataFilter.MENU_ACTIVE.includes(device?.data?.active_status) &&
-          device?.data?.device_id?.includes(dataFilter.SEARCH_TERM)
+          dataFilter.MENU_ACTIVE.includes(device.data.active_status) &&
+          device.data.device_id.includes(dataFilter.SEARCH_TERM)
         );
       }),
     );
@@ -120,6 +119,7 @@ const DeviceList = () => {
   }, [data]);
   return (
     <>
+  
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
         <h3 className={cx('header-title')}>Danh sách thiết bị</h3>
@@ -224,7 +224,7 @@ const DeviceList = () => {
             <div className={cx('form-field')}>
               <label>Từ khóa</label>
               <Search
-                className={cx('test2')}
+              placeholder='Nhập ID'
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   handleSearch(event);
                 }}
@@ -262,7 +262,15 @@ const DeviceList = () => {
                       <td>
                         <p className={cx('status')}>
                           <span className={cx('circle-icon')}>
-                            <CircleIcon color="success" />
+                            <CircleIcon
+                              color={
+                                device.data.active_status === 'Ngưng hoạt động'
+                                  ? 'error'
+                                  : device.data.active_status === 'Hoạt động'
+                                  ? 'success'
+                                  : undefined
+                              }
+                            />
                           </span>
                           <span>{device.data.active_status}</span>
                         </p>
@@ -270,7 +278,15 @@ const DeviceList = () => {
                       <td>
                         <p className={cx('status')}>
                           <span className={cx('circle-icon')}>
-                            <CircleIcon color="error" />
+                            <CircleIcon
+                              color={
+                                device.data.connect_status === 'Mất kết nối'
+                                  ? 'error'
+                                  : device.data.connect_status === 'Kết nối'
+                                  ? 'success'
+                                  : undefined
+                              }
+                            />
                           </span>
                           <span>{device.data.connect_status}</span>
                         </p>

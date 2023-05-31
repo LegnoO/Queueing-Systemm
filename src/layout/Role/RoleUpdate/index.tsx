@@ -70,9 +70,11 @@ const RoleUpdate = () => {
                   'gap-3',
                 )}
               >
-                <label htmlFor="">Tên vai trò</label>
+                <label htmlFor="">
+                  Tên vai trò<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
-                  className="w-100"
+                  className="w-100 p-2"
                   type="text"
                   placeholder="Nhập tên vai trò"
                   defaultValue={formData.role_name}
@@ -84,6 +86,10 @@ const RoleUpdate = () => {
                   placeholder="Nhập mô tả"
                   defaultValue={formData.describe}
                 />
+                <div className="text-muted mt-3">
+                  <span className={cx('warning-require')}>*</span>Là những thông
+                  tin bắt buộc
+                </div>
               </div>
               <div
                 className={cx(
@@ -97,6 +103,7 @@ const RoleUpdate = () => {
               >
                 <label className="" htmlFor="">
                   Phân quyền chức năng
+                  <span className={cx('warning-require')}>*</span>
                 </label>
                 <div className={cx('checkbox-form-inner', 'rounded-2')}>
                   <div className="d-flex flex-column gap-3 p-4">

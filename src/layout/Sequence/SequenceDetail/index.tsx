@@ -47,7 +47,6 @@ const SequenceDetail = () => {
                       'sequence-info-item',
                       'd-flex',
                       'flex-column',
-                      'fw-bold',
                       'me-3',
                     )}
                   >
@@ -63,6 +62,7 @@ const SequenceDetail = () => {
                       'd-flex',
                       'flex-column',
                       'fw-normal',
+                      'text-muted'
                     )}
                   >
                     <p>{sequenceData?.data.customer_name}</p>
@@ -80,7 +80,7 @@ const SequenceDetail = () => {
                       'sequence-info-item',
                       'd-flex',
                       'flex-column',
-                      'fw-bold',
+                    
                       'me-3',
                     )}
                   >
@@ -95,6 +95,7 @@ const SequenceDetail = () => {
                       'd-flex',
                       'flex-column',
                       'fw-normal',
+                      'text-muted'
                     )}
                   >
                     <p>{sequenceData?.data.source}</p>

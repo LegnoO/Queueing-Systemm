@@ -27,7 +27,6 @@ const AccountUpdate = () => {
     role: '',
     username: '',
     password: '',
-    confirm_password: '',
     active_status: '',
   });
 
@@ -77,8 +76,11 @@ const AccountUpdate = () => {
               <div className="col-2">
                 <div className="d-flex flex-column gap-3">
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Họ tên</label>
+                    <label htmlFor="">
+                      Họ tên<span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       defaultValue={accountData?.data.full_name}
                       name="full_name"
@@ -87,8 +89,12 @@ const AccountUpdate = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Số điện thoại</label>
+                    <label htmlFor="">
+                      Số điện thoại
+                      <span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       defaultValue={accountData?.data.phone_number}
                       name="phone_number"
@@ -97,8 +103,11 @@ const AccountUpdate = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Email</label>
+                    <label htmlFor="">
+                      Email<span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       defaultValue={accountData?.data.email}
                       name="email"
@@ -107,7 +116,9 @@ const AccountUpdate = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Vai trò</label>
+                    <label htmlFor="">
+                      Vai trò<span className={cx('warning-require')}>*</span>
+                    </label>
                     <Select
                       sx={[
                         {
@@ -140,7 +151,7 @@ const AccountUpdate = () => {
                         },
                       ]}
                       onChange={handleSelectChange}
-                      defaultValue="Kế toán"
+                      value={formData.role}
                       name="role"
                     >
                       {ROLE_MENU.map((title: string, index: number) => {
@@ -152,13 +163,21 @@ const AccountUpdate = () => {
                       })}
                     </Select>
                   </div>
+                  <div className="text-muted mt-3">
+                    <span className={cx('warning-require')}>*</span>Là những
+                    thông tin bắt buộc
+                  </div>
                 </div>
               </div>
               <div className="col-2">
                 <div className="d-flex flex-column gap-3">
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Tên đăng nhập</label>
+                    <label htmlFor="">
+                      Tên đăng nhập
+                      <span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       defaultValue={accountData?.data.username}
                       name="username"
@@ -167,8 +186,11 @@ const AccountUpdate = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Mật khẩu</label>
+                    <label htmlFor="">
+                      Mật khẩu<span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       defaultValue={accountData?.data.password}
                       name="password"
@@ -177,17 +199,22 @@ const AccountUpdate = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Nhập lại mật khẩu</label>
+                    <label htmlFor="">
+                      Nhập lại mật khẩu
+                      <span className={cx('warning-require')}>*</span>
+                    </label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
-                      defaultValue={accountData?.data.confirm_password}
                       name="confirm_password"
                       type="password"
                       placeholder="Nhập lại mật khẩu"
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Tình trạng</label>
+                    <label htmlFor="">
+                      Tình trạng<span className={cx('warning-require')}>*</span>
+                    </label>
                     <Select
                       sx={[
                         {
@@ -220,10 +247,9 @@ const AccountUpdate = () => {
                         },
                       ]}
                       onChange={handleSelectChange}
-                      defaultValue="Tất cả"
+                      value={formData.active_status}
                       name="status"
                     >
-                      <MenuItem value="Tất cả">Tất cả</MenuItem>
                       {STATUS_MENU.map((title: string, index: number) => {
                         return (
                           <MenuItem key={index} value={title}>

@@ -101,7 +101,8 @@ const AccountList = () => {
 
   return (
     <>
-      <Header path={CONTENT_TITLES} openDrop={true} />
+   
+      <Header path={CONTENT_TITLES} openDrop={false} />
       <div className={cx('wrapper')}>
         <div className={cx('inner')}>
           <h3 className={cx('header-title')}>Danh sách tài khoản</h3>
@@ -158,10 +159,7 @@ const AccountList = () => {
               </div>
               <div className={cx('form-field')}>
                 <label>Từ khóa</label>
-                <Search
-                  placeholder='Nhập Username'
-                  onChange={handleSearch}
-                />
+                <Search placeholder="Nhập Username" onChange={handleSearch} />
               </div>
             </div>
             <div className={cx('list-container')}>
@@ -199,7 +197,16 @@ const AccountList = () => {
                         <td>
                           <p className={cx('status')}>
                             <span className={cx('circle-icon')}>
-                              <CircleIcon color="success" />
+                              <CircleIcon
+                                color={
+                                  content.data.active_status === 'Hoạt động'
+                                    ? 'success'
+                                    : content.data.active_status ===
+                                      'Ngưng hoạt động'
+                                    ? 'error'
+                                    : undefined
+                                }
+                              />
                             </span>
                             <span>{content.data.active_status}</span>
                           </p>

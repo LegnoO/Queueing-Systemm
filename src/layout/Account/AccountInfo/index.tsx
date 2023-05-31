@@ -69,7 +69,7 @@ const AccountInfo = () => {
                   style={{ background: '#EAEAEC' }}
                   disabled
                   type="text"
-                  value=""
+                  value="0937525530"
                 />
               </div>
               <div className="d-flex flex-column mb-3">
@@ -81,7 +81,7 @@ const AccountInfo = () => {
                   style={{ background: '#EAEAEC' }}
                   disabled
                   type="text"
-                  value=""
+                  value="admin@gmail.com"
                 />
               </div>
             </div>
@@ -96,7 +96,7 @@ const AccountInfo = () => {
                   style={{ background: '#EAEAEC' }}
                   disabled
                   type="text"
-                  value="abc"
+                  value="admin"
                 />
               </div>
               <div className="d-flex flex-column mb-3">
@@ -108,7 +108,7 @@ const AccountInfo = () => {
                   style={{ background: '#EAEAEC' }}
                   disabled
                   type="text"
-                  value=""
+                  value="admin"
                 />
               </div>
               <div className="d-flex flex-column mb-3">
@@ -120,7 +120,7 @@ const AccountInfo = () => {
                   style={{ background: '#EAEAEC' }}
                   disabled
                   type="text"
-                  value=""
+                  value="admin"
                 />
               </div>
             </div>

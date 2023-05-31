@@ -4,7 +4,7 @@ import { pathType } from '~/types/Header';
 import { useState } from 'react';
 import { Checkbox } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import {  Role } from '~/types/Api';
+import { Role } from '~/types/Api';
 import { addRole } from '~/services/api';
 import { useAppDispatch } from '~/app/store';
 import Button from '~/components/Button';
@@ -44,7 +44,7 @@ const RoleAdd = () => {
 
   const handleAddData = (): void => {
     addRole(formData);
-    navigate("/role-list")
+    navigate('/role-list');
   };
 
   return (
@@ -65,9 +65,11 @@ const RoleAdd = () => {
                   'gap-3',
                 )}
               >
-                <label htmlFor="">Tên vai trò</label>
+                <label htmlFor="">
+                  Tên vai trò<span className={cx('warning-require')}>*</span>
+                </label>
                 <input
-                  className="w-100"
+                  className="w-100 p-2"
                   type="text"
                   placeholder="Nhập tên vai trò"
                   name="role_name"
@@ -81,6 +83,10 @@ const RoleAdd = () => {
                   name="describe"
                   onChange={handleChange}
                 />
+                <div className="text-muted mt-3">
+                  <span className={cx('warning-require')}>*</span>Là những thông
+                  tin bắt buộc
+                </div>
               </div>
               <div
                 className={cx(
@@ -94,6 +100,7 @@ const RoleAdd = () => {
               >
                 <label className="" htmlFor="">
                   Phân quyền chức năng
+                  <span className={cx('warning-require')}>*</span>
                 </label>
                 <div className={cx('checkbox-form-inner', 'rounded-2')}>
                   <div className="d-flex flex-column gap-3 p-4">

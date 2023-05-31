@@ -30,7 +30,6 @@ const AccountAdd = () => {
     role: '',
     username: '',
     password: '',
-    confirm_password: '',
     active_status: '',
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +41,6 @@ const AccountAdd = () => {
     console.log({ value, name });
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  console.log(formData);
 
   return (
     <>
@@ -56,8 +54,9 @@ const AccountAdd = () => {
               <div className="col-2">
                 <div className="d-flex flex-column gap-3">
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Họ tên</label>
+                    <label htmlFor="">Họ tên<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="full_name"
@@ -66,8 +65,9 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Số điện thoại</label>
+                    <label htmlFor="">Số điện thoại<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="phone_number"
@@ -76,8 +76,9 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Email</label>
+                    <label htmlFor="">Email<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="email"
@@ -86,7 +87,7 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Vai trò</label>
+                    <label htmlFor="">Vai trò<span className={cx('warning-require')}>*</span></label>
                     <Select
                       sx={[
                         {
@@ -131,13 +132,18 @@ const AccountAdd = () => {
                       })}
                     </Select>
                   </div>
+                  <div className="text-muted mt-3">
+                    <span className={cx('warning-require')}>*</span>Là những
+                    thông tin bắt buộc
+                  </div>
                 </div>
               </div>
               <div className="col-2">
                 <div className="d-flex flex-column gap-3">
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Tên đăng nhập</label>
+                    <label htmlFor="">Tên đăng nhập<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="username"
@@ -146,8 +152,9 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Mật khẩu</label>
+                    <label htmlFor="">Mật khẩu<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="password"
@@ -156,8 +163,9 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Nhập lại mật khẩu</label>
+                    <label htmlFor="">Nhập lại mật khẩu<span className={cx('warning-require')}>*</span></label>
                     <input
+                      className="p-2"
                       onChange={handleInputChange}
                       // defaultValue={deviceData.data.device_id}
                       name="confirm_password"
@@ -166,7 +174,7 @@ const AccountAdd = () => {
                     />
                   </div>
                   <div className="d-flex flex-column gap-2">
-                    <label htmlFor="">Tình trạng</label>
+                    <label htmlFor="">Tình trạng<span className={cx('warning-require')}>*</span></label>
                     <Select
                       sx={[
                         {
@@ -199,10 +207,8 @@ const AccountAdd = () => {
                         },
                       ]}
                       onChange={handleSelectChange}
-                      defaultValue="Tất cả"
                       name="status"
                     >
-                      <MenuItem value="Tất cả">Tất cả</MenuItem>
                       {STATUS_MENU.map((title: string, index: number) => {
                         return (
                           <MenuItem key={index} value={title}>

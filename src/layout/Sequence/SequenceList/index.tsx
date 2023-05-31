@@ -15,6 +15,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Search from '~/components/Search';
 import ReactPaginate from 'react-paginate';
+
 import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
@@ -108,8 +109,7 @@ const SequenceList = () => {
   useEffect(() => {
     setData(
       sequenceData?.filter((sequence: SequenceListType) => {
-        const timeDataStart = sequence.data.timestamp_start.seconds * 1000;
-        const timeDataEnd = sequence.data.timestamp_end.seconds * 1000;
+        const timeData = sequence.data.timestamp_start.seconds * 1000;
         const timeFilterStart = dataFilter.time.start.getTime();
         const timeFilterEnd = dataFilter.time.end.getTime();
 
@@ -117,12 +117,9 @@ const SequenceList = () => {
           dataFilter.MENU_STATUS.includes(sequence.data.status) &&
           dataFilter.MENU_SOURCE.includes(sequence.data.source) &&
           dataFilter.MENU_SERVICE.includes(sequence.data.service_name) &&
-          sequence.data.customer_name.includes(dataFilter.SEARCH_TERM)
-          //  &&
-          // timeDataStart <= timeFilterStart &&
-          // timeDataStart >= timeFilterStart &&
-          // timeDataEnd <= timeFilterEnd &&
-          // timeDataEnd >= timeFilterEnd
+          sequence.data.customer_name.includes(dataFilter.SEARCH_TERM) &&
+          timeData >= timeFilterStart &&
+          timeData <= timeFilterEnd
         );
       }),
     );
@@ -273,9 +270,7 @@ const SequenceList = () => {
                     },
                   },
                 ]}
-                onChange={(event: SelectChangeEvent) => {
-                  handleFilterData(event);
-                }}
+                onChange={handleFilterData}
                 defaultValue="Tất cả"
                 name="MENU_SOURCE"
               >
@@ -358,7 +353,7 @@ const SequenceList = () => {
             <div className={cx('form-field', 'col')}>
               <label>Từ khóa</label>
               <Search
-                className={cx('test2')}
+                placeholder="Nhập ID"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   handleSearch(event);
                 }}

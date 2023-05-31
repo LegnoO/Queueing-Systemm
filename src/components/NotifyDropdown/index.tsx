@@ -6,6 +6,7 @@ import { fetchActivityList } from '~/features/activitySlice';
 import { formatTimeStampToTime, formatTimeStampToDate } from '~/util/date';
 import { ActivityListType } from '~/types/Api';
 import { Activity } from '../../types/Api';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 type NotifyProps = {
@@ -17,9 +18,14 @@ const NotifyDropdown: React.FC<NotifyProps> = ({
   openDrop = false,
   className,
 }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(openDrop);
   const dispatch = useAppDispatch();
   const activityData = useAppSelector((state) => state.activity.data);
+
+  const moveToUserInfo = (): void => {
+    navigate('/account-info');
+  };
 
   const handleFetchData = (): void => {
     dispatch(fetchActivityList());
@@ -75,7 +81,7 @@ const NotifyDropdown: React.FC<NotifyProps> = ({
           />
         </svg>
       </div>
-      <div className={cx('user')}>
+      <div onClick={moveToUserInfo} className={cx('user', 'pointer')}>
         <img
           className={cx('avatar')}
           alt=""

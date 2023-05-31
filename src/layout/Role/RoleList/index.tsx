@@ -5,14 +5,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { fetchRoleList } from '~/features/roleSlice';
 import { RoleListType } from '~/types/Api';
 import { formatTimeStampToTime, formatTimeStampToDate } from '~/util/date';
-import { DatePicker } from '@mui/x-date-pickers';
 import { pathType } from '~/types/Header';
 import Header from '~/layout/Header';
 import styles from './RoleList.module.scss';
 import classNames from 'classnames/bind';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ReactPaginate from 'react-paginate';
 import Search from '~/components/Search';
+
 
 const cx = classNames.bind(styles);
 
@@ -21,19 +20,7 @@ const RoleList = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const roleData = useAppSelector((state) => state.role.data);
-  // Pagination
-  const [searchTerm, setSearchTerm] = useState<RoleListType[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const dataPerPage = 5;
-  const pagesVisited = currentPage * dataPerPage;
-  const pageCount = Math.ceil(searchTerm.length / dataPerPage);
-  const currentPageData = data?.slice(
-    pagesVisited,
-    pagesVisited + dataPerPage,
-  );
-  const handleChangePage = (selectedItem: { selected: number }) => {
-    setCurrentPage(selectedItem.selected);
-  };
+
   const [dataFilter, setDataFilter] = useState<{ SEARCH_TERM: string }>({
     SEARCH_TERM: '',
   });
@@ -67,9 +54,6 @@ const RoleList = () => {
     handleFetchData();
   }, []);
 
-  useEffect(() => {
-    setSearchTerm(roleData);
-  }, [roleData]);
   return (
     <>
       <Header path={CONTENT_TITLES} />
@@ -103,7 +87,7 @@ const RoleList = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentPageData.map((data) => {
+                {data.map((data) => {
                   return (
                     <tr key={data.id}>
                       <td>
@@ -131,28 +115,16 @@ const RoleList = () => {
             </table>
 
             <div className={cx('service-btn-container')}>
-              <Link to="/sequence-add">
+              <Link to="/role-add">
                 <button className={cx('')}>
                   <span>
                     <AddBoxIcon />
                   </span>
-                  <span>Cấp số mới</span>
+                  <span>Thêm vai trò</span>
                 </button>
               </Link>
             </div>
           </div>
-          <ReactPaginate
-            previousLabel={'◄'}
-            nextLabel={'►'}
-            breakLabel={'...'}
-            pageCount={pageCount}
-            onPageChange={handleChangePage}
-            pageRangeDisplayed={5}
-            marginPagesDisplayed={2}
-            forcePage={currentPage}
-            containerClassName="pagination"
-            activeClassName="page-active"
-          />
         </div>
       </div>
     </>

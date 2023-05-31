@@ -53,7 +53,7 @@ const ServiceDetail = () => {
     navigate(`/service-update/${id}`);
   };
 
-  const MENU_STATUS = ['Tất cả', 'Đã hoàn thành', 'Đã thực hiện', 'Vắng'];
+  const MENU_STATUS = ['Tất cả', 'Đã hoàn thành', 'Đang thực hiện', 'Vắng'];
 
   const handleFilterData = (event: SelectChangeEvent) => {
     type ObjectWithIndex = {
@@ -271,7 +271,7 @@ const ServiceDetail = () => {
                 <div className={cx('form-field', 'ms-auto')}>
                   <label>Từ khóa</label>
                   <Search
-                    className={cx('test2')}
+                   placeholder='Nhập STT'
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleSearch(event);
                     }}
@@ -293,18 +293,17 @@ const ServiceDetail = () => {
                           <td>
                             <span>{service.data.serial}</span>
                           </td>
-
                           <td>
                             <p className={cx('status')}>
                               <span className={cx('circle-icon')}>
                                 <CircleIcon
                                   color={
-                                    service.data.status === 'Đã hoàn thành'
-                                      ? 'success'
-                                      : service.data.status === 'Đang thực hiện'
+                                    service.data.status ===
+                                    'Đang thực hiện'
                                       ? 'info'
-                                      : service.data.status === 'Vắng'
-                                      ? undefined
+                                      : service.data.status ===
+                                        'Đã hoàn thành'
+                                      ? 'success'
                                       : undefined
                                   }
                                 />

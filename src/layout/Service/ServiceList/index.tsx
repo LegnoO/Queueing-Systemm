@@ -15,6 +15,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import dayjs from 'dayjs';
 import Header from '~/layout/Header';
 import ReactPaginate from 'react-paginate';
+
 const cx = classNames.bind(styles);
 
 interface ServiceFilter {
@@ -216,7 +217,7 @@ const ServiceList = () => {
             <div className={cx('form-field')}>
               <label>Từ khóa</label>
               <Search
-                className={cx('test2')}
+                placeholder="Nhập ID"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   handleSearch(event);
                 }}

@@ -22,13 +22,17 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const userData = useAppSelector((state) => state.user.data);
-  console.log(userData)
+  console.log(userData);
   const [error, setError] = useState<string>('');
   const [formValue, setFormValue] = useState<FormProps>({
     username: '',
     password: '',
     email: '',
   });
+
+  const moveToForgotPassword = (): void => {
+    navigate('/forgot-password');
+  };
 
   const handleFetchData = (): void => {
     dispatch(fetchUserList());
@@ -66,6 +70,7 @@ const LoginForm = () => {
       <div className={cx('username')}>
         <label htmlFor="">Tên đăng nhập</label>
         <input
+          required
           className={cx({ error: error })}
           type="text"
           name="username"
@@ -76,6 +81,7 @@ const LoginForm = () => {
       <div className={cx('password')}>
         <label htmlFor="">Mật khẩu</label>
         <input
+          required
           className={cx({ error: error })}
           type="password"
           name="password"
@@ -86,7 +92,12 @@ const LoginForm = () => {
 
       {error.length < 1 ? (
         <p>
-          <span className={cx('password-forgot')}>Quên mật khẩu?</span>
+          <span
+            onClick={() => moveToForgotPassword()}
+            className={cx('password-forgot')}
+          >
+            Quên mật khẩu?
+          </span>
         </p>
       ) : (
         <p className={cx('login-error')}>
@@ -99,7 +110,10 @@ const LoginForm = () => {
       </Button>
 
       {error.length > 0 && (
-        <span className={cx('password-forgot', 'text-center')}>
+        <span
+          onClick={() => moveToForgotPassword()}
+          className={cx('password-forgot', 'text-center')}
+        >
           Quên mật khẩu?
         </span>
       )}

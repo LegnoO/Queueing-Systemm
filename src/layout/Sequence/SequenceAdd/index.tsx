@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Header from '~/layout/Header';
 import styles from './SequenceAdd.module.scss';
 import { Select, SelectChangeEvent, MenuItem } from '@mui/material';
@@ -8,6 +8,11 @@ import { pathType } from '~/types/Header';
 const cx = classNames.bind(styles);
 
 const SequenceAdd = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  console.log(isOpen);
+
+  const handleClickOutside = () => {};
+
   const CONTENT_TITLES: pathType[] = [
     { text: 'cấp số' },
     { text: 'Danh sách cấp số', to: '/sequence-list' },
@@ -90,12 +95,51 @@ const SequenceAdd = () => {
                   onClick={() => {
                     // updateDevice();
                     // handleUpdateDevice(deviceData?.id, formData);
+                    setIsOpen((prev) => !prev);
                   }}
                   className={cx('action-button__primary')}
                 >
                   In số
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+        <div
+          onClick={() => setIsOpen(false)}
+          className={cx('messages-popup', 'shadow', {
+            open: isOpen,
+            close: !isOpen,
+          })}
+        >
+          <div
+            onClick={(event: React.MouseEvent<HTMLDivElement>): void => {
+              event.stopPropagation();
+            }}
+            className={cx('messages-popup-container')}
+          >
+            <div className={cx('body', 'p-3', 'text-center')}>
+              <h3 style={{ color: '#535261' }} className="fs-4 mb-3">
+                Số thứ tự được cấp
+              </h3>
+              <h1 style={{ color: '#FF7506' }} className="fs-5 mb-3">
+                2001201
+              </h1>
+              <p className="fs-1 mb-4">
+                DV: Khám răng hàm mặt <b>(tại quầy số 1)</b>
+              </p>
+            </div>
+            <div
+              className={cx(
+                'footer',
+                'text-white',
+                'p-3',
+                'text-center',
+                'fw-bold',
+              )}
+            >
+              <p className="mb-2">Thời gian cấp: 09:30 11/10/2021</p>
+              <p>Hạn sử dụng: 17:30 11/10/2021</p>
             </div>
           </div>
         </div>

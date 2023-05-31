@@ -33,7 +33,6 @@ const DeviceAdd = () => {
     { text: 'Thêm thiết bị' },
   ];
 
-  console.log(formData);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -53,7 +52,9 @@ const DeviceAdd = () => {
               <h4 className={cx('title')}>Thông tin thiết bị</h4>
               <div className={cx('device-info__top')}>
                 <div>
-                  <label htmlFor="">Mã thiết bị</label>
+                  <label htmlFor="">
+                    Mã thiết bị<span className={cx('warning-require')}>*</span>
+                  </label>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(event);
@@ -62,7 +63,9 @@ const DeviceAdd = () => {
                     type="text"
                     placeholder="Nhập mã thiết bị"
                   />
-                  <label htmlFor="">Tên thiết bị</label>
+                  <label htmlFor="">
+                    Tên thiết bị<span className={cx('warning-require')}>*</span>
+                  </label>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(event);
@@ -71,7 +74,9 @@ const DeviceAdd = () => {
                     name="device_name"
                     placeholder="Nhập tên thiết bị"
                   />
-                  <label htmlFor="">Địa chỉ IP</label>
+                  <label htmlFor="">
+                    Địa chỉ IP<span className={cx('warning-require')}>*</span>
+                  </label>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(event);
@@ -82,7 +87,10 @@ const DeviceAdd = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="">Chọn loại thiết bị</label>
+                  <label htmlFor="">
+                    Chọn loại thiết bị
+                    <span className={cx('warning-require')}>*</span>
+                  </label>
                   <Select
                     onChange={(event: SelectChangeEvent) => {
                       handleSelectChange(event);
@@ -128,7 +136,10 @@ const DeviceAdd = () => {
                     <MenuItem value="Kiosk">Kiosk</MenuItem>
                     <MenuItem value="Display counter">Display counter</MenuItem>
                   </Select>
-                  <label htmlFor="">Tên đăng nhập</label>
+                  <label htmlFor="">
+                    Tên đăng nhập
+                    <span className={cx('warning-require')}>*</span>
+                  </label>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(event);
@@ -137,7 +148,10 @@ const DeviceAdd = () => {
                     name="username"
                     placeholder="Nhập tài khoản"
                   />
-                  <label htmlFor="">Nhập mật khẩu</label>
+                  <label htmlFor="">
+                    Nhập mật khẩu
+                    <span className={cx('warning-require')}>*</span>
+                  </label>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(event);
@@ -148,8 +162,11 @@ const DeviceAdd = () => {
                   />
                 </div>
               </div>
-              <div className={cx('device-info__bottom')}>
-                <label htmlFor="">Dịch vụ sử dụng</label>
+              <div className={cx('device-info__bottom', 'mb-3')}>
+                <label htmlFor="">
+                  Dịch vụ sử dụng
+                  <span className={cx('warning-require')}>*</span>
+                </label>
                 <div>
                   <input
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,6 +176,10 @@ const DeviceAdd = () => {
                     name="service_usage"
                     placeholder="Nhập dịch vụ sử dụng"
                   />
+                </div>
+                <div className="text-muted mt-3">
+                  <span className={cx('warning-require')}>*</span>Là những thông
+                  tin bắt buộc
                 </div>
               </div>
             </div>

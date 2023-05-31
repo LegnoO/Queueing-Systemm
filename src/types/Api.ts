@@ -85,7 +85,6 @@ export interface Account {
   role: string;
   username: string;
   password: string
-  confirm_password: string;
   active_status: string;
 }
 
