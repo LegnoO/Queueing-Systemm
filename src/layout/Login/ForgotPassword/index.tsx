@@ -116,11 +116,6 @@ const ForgotPassword = () => {
               Tiếp tục
             </Button>
           </div>
-          {error.length > 0 && (
-            <p className={cx('login-error')}>
-              <ErrorOutline /> <span>{error}</span>
-            </p>
-          )}
         </form>
       ) : (
         <form className={cx('wrapper')} onSubmit={handleSubmit}>

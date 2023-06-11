@@ -23,8 +23,8 @@ const DeviceAdd = () => {
     ip: '',
     username: '',
     password: '',
-    active_status: '',
-    connect_status: '',
+    active_status: 'Hoạt động',
+    connect_status: 'Kết nối',
   });
 
   const CONTENT_TITLES: pathType[] = [
@@ -193,7 +193,7 @@ const DeviceAdd = () => {
             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               addDevice(formData);
             }}
-            to="/device"
+            to="/device-list"
             className={cx('action-button__primary')}
           >
             Thêm thiết bị

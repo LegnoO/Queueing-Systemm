@@ -30,7 +30,7 @@ const AccountAdd = () => {
     role: '',
     username: '',
     password: '',
-    active_status: '',
+    active_status: 'Hoạt động',
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;

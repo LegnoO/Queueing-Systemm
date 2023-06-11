@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
 
 const loggerMiddleware = createLogger();
 
-const middleware = [thunkMiddleware, loggerMiddleware];
+const middleware = [thunkMiddleware];
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -14,7 +14,7 @@ import Header from '~/layout/Header';
 import { pathType } from '~/types/Header';
 import { truncateString } from '~/util/truncateString';
 import ReactPaginate from 'react-paginate';
-
+// import useTest from '~/hooks/useTest';
 const cx = classNames.bind(styles);
 
 interface DeviceFilter {
@@ -27,7 +27,9 @@ const DeviceList = () => {
   //   setAge(event.target.value as string);
   // };
   const [data, setData] = useState<DeviceListType[]>([]);
+  // const count = useTest<number>(10);
 
+  
   // Pagination
   const [searchTerm, setSearchTerm] = useState<DeviceListType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -119,7 +121,6 @@ const DeviceList = () => {
   }, [data]);
   return (
     <>
-  
       <Header path={CONTENT_TITLES} />
       <div className={cx('wrapper')}>
         <h3 className={cx('header-title')}>Danh sách thiết bị</h3>
@@ -224,7 +225,7 @@ const DeviceList = () => {
             <div className={cx('form-field')}>
               <label>Từ khóa</label>
               <Search
-              placeholder='Nhập ID'
+                placeholder="Nhập ID"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   handleSearch(event);
                 }}

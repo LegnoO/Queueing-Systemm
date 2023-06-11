@@ -8,9 +8,26 @@ import NotifyDropdown from '~/components/NotifyDropdown';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 import classNames from 'classnames/bind';
+import useFetch from '~/hooks/useFetch';
+import { StringMappingType } from 'typescript';
 
 const cx = classNames.bind(styles);
+
+interface ITodos {
+  completed: boolean;
+  id: number;
+  title: String;
+  userId: number;
+}
+
 function DashBoard() {
+  const [data, loading] = useFetch<ITodos[]>(
+    'https://jsonplaceholder.typicode.com/todos',
+    [],
+  );
+
+  console.log(data,loading);
+
   const navigate = useNavigate();
 
   const navigateToSequence = (): void => {
@@ -143,7 +160,10 @@ function DashBoard() {
                 Biểu đồ cấp số
               </h3>
               <div className="mb-3">
-                <div onClick={navigateToSequence} className="row gap-3 cursor-pointer">
+                <div
+                  onClick={navigateToSequence}
+                  className="row gap-3 cursor-pointer"
+                >
                   <div
                     className={cx(
                       'info-item',
@@ -441,7 +461,10 @@ function DashBoard() {
                 <h2 className="fs-4 mb-3" style={{ color: '#FF7506' }}>
                   Tổng quan
                 </h2>
-                <div onClick={navigateToService} className="row flex-column cursor-pointer">
+                <div
+                  onClick={navigateToService}
+                  className="row flex-column cursor-pointer"
+                >
                   <div
                     style={{ boxShadow: ' 2px 2px 15px rgba(70, 64, 67, 0.1)' }}
                     className="d-flex w-100 bg-white rounded-2 gap-2 p-2 mb-3"

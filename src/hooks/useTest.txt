@@ -1,0 +1,11 @@
+import { useEffect, useState } from 'react';
+
+const useTest = <T,>(init: T): T => {
+  const [total, setTotal] = useState<T>(init);
+  useEffect(() => {
+    setTotal(100);
+  }, []);
+  return total;
+};
+
+export default useTest;

@@ -20,6 +20,11 @@ const ServiceUpdate = () => {
   const { id } = useParams<RouteParams>() as { id: string };
   const dispatch = useAppDispatch();
   const [serviceData, setServiceData] = useState<ServiceListType | undefined>();
+  const handleUpdateService = (id: string | undefined, data: Service): void => {
+    if (id) {
+      updateService(id, data);
+    }
+  };
   const [formData, setFormData] = useState<Service>({
     status: '',
     active_status: '',
@@ -209,9 +214,7 @@ const ServiceUpdate = () => {
           </Button>
           <Button
             to="/service-list"
-            onClick={() => {
-              // updateService(serviceData.id, formData);
-            }}
+            onClick={() => handleUpdateService(serviceData?.id,formData)}
             className={cx('action-button__primary')}
           >
             Cập nhật
