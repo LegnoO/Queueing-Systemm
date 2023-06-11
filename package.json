@@ -1,5 +1,5 @@
 {
-  "homepage":"https://legnoo.github.io/Queueing-System/",
+  "homepage":"https://legnoo.github.io/queueing-system/",
   "name": "queueing-system",
   "version": "0.1.0",
   "private": true,
@@ -49,8 +49,8 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-	"predeploy":"npm run build",
-	"deploy":"gh-pages -d build",
+	"predeploy": "npm run build",
+	"deploy": "gh-pages -d build",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
